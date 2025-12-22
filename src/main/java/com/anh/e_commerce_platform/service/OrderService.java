@@ -15,12 +15,26 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private OrderRepository orderRepository;
 
     // Créer une commande
     public Order createOrder(Order order) {
         // TODO: Ajouter server-side validation pour la sécurité
         // On fait confiance front-end calculation de prix pour l'instant
+
+        // Vérifier que l'utilisateur existe vraiment
+        if (order.getUser() != null && order.getUser().getId() != null) {
+            Optional<User> existingUser = userService.getUserById(order.getUser().getId());
+            if (existingUser.isPresent()) {
+                order.setUser(existingUser.get()); // Utiliser l'utilisateur complet
+            } else {
+                throw new IllegalArgumentException("Utilisateur introuvable avec l'ID " + order.getUser().getId());
+            }
+        }
+
         return orderRepository.save(order);
     }
 
