@@ -1,5 +1,5 @@
 <div class="product-list-container">
-  <h2>🛒 Notre Catalogue</h2>
+  <h2>Notre Catalogue</h2>
 
   <!-- Loading -->
   @if (isLoading) {
@@ -43,7 +43,11 @@
           </span>
         </div>
 
-        <button class="add-to-cart-btn" [disabled]="product.stock === 0">
+        <button
+          class="add-to-cart-btn"
+          [disabled]="product.stock === 0"
+          (click)="addToCart(product)"
+        >
           @if (product.stock > 0) { Ajouter au panier } @else { Rupture de stock }
         </button>
       </div>

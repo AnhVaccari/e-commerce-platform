@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Product } from '../../interfaces/product.interface';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -14,18 +15,20 @@ export class ProductListComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private productService: ProductService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
   loadProducts(): void {
-    console.log('Component: Starting to load products...');
     this.isLoading = true;
     this.productService.getAllProducts().subscribe({
       next: (data) => {
-        console.log('Component: Received data:', data);
         this.products = data;
         this.isLoading = false;
         this.cdr.detectChanges();
@@ -36,9 +39,11 @@ export class ProductListComponent implements OnInit {
         this.isLoading = false;
         this.cdr.detectChanges();
       },
-      complete: () => {
-        console.log('Component: Product loading completed');
-      },
     });
+  }
+
+  addToCart(product: Product): void {
+    this.cartService.addToCart(product, 1);
+    console.log('Produit ajouté au panier:', product.name);
   }
 }
