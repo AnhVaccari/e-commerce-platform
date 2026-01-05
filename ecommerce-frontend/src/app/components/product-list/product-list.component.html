@@ -1,0 +1,61 @@
+<div class="product-list-container">
+  <h2>🛒 Notre Catalogue</h2>
+
+  <!-- Loading -->
+  @if (isLoading) {
+  <div class="loading">
+    <p>Chargement des produits...</p>
+  </div>
+  }
+
+  <!-- Error -->
+  @if (errorMessage) {
+  <div class="error">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadProducts()" class="retry-btn">Réessayer</button>
+  </div>
+  }
+
+  <!-- Products Grid -->
+  @if (!isLoading && !errorMessage && products.length > 0) {
+  <div class="products-grid">
+    @for (product of products; track product.id) {
+    <div class="product-card">
+      <div class="product-header">
+        <h3>{{ product.name }}</h3>
+        <span class="category-badge">{{ product.category.name }}</span>
+      </div>
+
+      <p class="product-description">{{ product.description }}</p>
+
+      <div class="product-footer">
+        <div class="price-stock">
+          <span class="price">{{ product.price }}€</span>
+
+          <span
+            class="availability"
+            [class.in-stock]="product.stock > 10"
+            [class.limited-stock]="product.stock > 0 && product.stock <= 10"
+            [class.out-of-stock]="product.stock === 0"
+          >
+            @if (product.stock > 10) { En stock } @else if (product.stock > 0) { Stock limité }
+            @else { Rupture de stock }
+          </span>
+        </div>
+
+        <button class="add-to-cart-btn" [disabled]="product.stock === 0">
+          @if (product.stock > 0) { Ajouter au panier } @else { Rupture de stock }
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- Empty state -->
+  @if (!isLoading && !errorMessage && products.length === 0) {
+  <div class="empty-state">
+    <p>Aucun produit disponible pour le moment.</p>
+  </div>
+  }
+</div>

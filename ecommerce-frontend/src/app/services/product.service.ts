@@ -13,6 +13,7 @@ export class ProductService {
 
   // Récupérer tous les produits
   getAllProducts(): Observable<Product[]> {
+    console.log('Service: Calling API...');
     return this.http.get<Product[]>(`${this.apiUrl}/products`);
   }
 
