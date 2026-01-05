@@ -2,9 +2,9 @@
 
 Application e-commerce complète développée avec **Spring Boot** et **Angular**.
 
-![E-commerce Platform](images/e-commerce.png)
+![E-commerce Platform](images/e_commerce1.png)
 
-![E-commerce Platform](images/e-commerce_2.png)
+![E-commerce Platform](images/e_commerce2.png)
 ## 🎯 Description
 
 Plateforme e-commerce moderne avec gestion de catalogue, panier d'achat et interface administrative. 
