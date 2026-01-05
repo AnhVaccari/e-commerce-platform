@@ -1,6 +1,36 @@
 <div class="product-list-container">
   <h2>Notre Catalogue</h2>
 
+  <!-- Barre de recherche et filtres -->
+  <div class="search-container">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Rechercher un produit..."
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()"
+      (input)="onSearch()"
+    />
+
+    <select class="category-filter" [(ngModel)]="selectedCategoryId" (change)="onCategoryFilter()">
+      <option [value]="null">Toutes les catégories</option>
+      @for (category of categories; track category.id) {
+      <option [value]="category.id">{{ category.name }}</option>
+      }
+    </select>
+
+    <button class="search-btn" (click)="onSearch()">🔍</button>
+
+    @if (searchTerm || selectedCategoryId) {
+    <button
+      class="clear-search-btn"
+      (click)="searchTerm = ''; selectedCategoryId = null; loadProducts()"
+    >
+      ✕ Effacer filtres
+    </button>
+    }
+  </div>
+
   <!-- Loading -->
   @if (isLoading) {
   <div class="loading">

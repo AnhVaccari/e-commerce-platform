@@ -81,7 +81,7 @@ h2 {
 }
 
 .remove-btn {
-  background: #dc3545;
+
   color: white;
   border: none;
   padding: 8px 12px;
@@ -90,7 +90,7 @@ h2 {
 }
 
 .remove-btn:hover {
-  background: #c82333;
+  background: #eb6e6e;
 }
 
 .cart-summary {
