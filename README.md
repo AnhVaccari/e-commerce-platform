@@ -60,7 +60,7 @@ Développée pour démontrer la maîtrise du développement full-stack Java/Angu
 ### Backend (Spring Boot)
 ```bash
 # Cloner le projet
-git clone https://github.com/TON-USERNAME/e-commerce-platform.git
+git clone https://github.com/AnhVaccari/e-commerce-platform.git
 cd e-commerce-platform
 
 # Lancer l'API
