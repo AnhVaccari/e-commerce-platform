@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Product } from '../../interfaces/product.interface';
 import { ProductService } from '../../services/product.service';
 
@@ -14,7 +14,7 @@ export class ProductListComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -28,11 +28,13 @@ export class ProductListComponent implements OnInit {
         console.log('Component: Received data:', data);
         this.products = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Erreur lors du chargement des produits:', error);
         this.errorMessage = 'Impossible de charger les produits';
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       complete: () => {
         console.log('Component: Product loading completed');
