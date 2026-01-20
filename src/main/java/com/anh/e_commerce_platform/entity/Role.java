@@ -1,0 +1,6 @@
+package com.anh.e_commerce_platform.entity;
+
+public enum Role {
+    USER,
+    ADMIN
+}
