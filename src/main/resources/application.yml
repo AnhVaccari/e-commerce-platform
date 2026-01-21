@@ -1,0 +1,4 @@
+# Configuration JWT
+jwt:
+  secret: mySecretKeyForPortfolioOnly123456789 # Clé secrète pour signer les tokens
+  expiration: 86400000 # 24 heures en millisecondes
