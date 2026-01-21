@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Recherche par email (connexion utilisateur)
     Optional<User> findByEmail(String email);
 
-    // Vérifier si email existe déjà
+    // Vérifier si email existe déjà (register)
     boolean existsByEmail(String email);
 
 }
