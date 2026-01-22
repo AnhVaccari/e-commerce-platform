@@ -1,8 +1,11 @@
 package com.anh.e_commerce_platform.config;
 
 import com.anh.e_commerce_platform.entity.Product;
+import com.anh.e_commerce_platform.entity.Role;
+import com.anh.e_commerce_platform.entity.User;
 import com.anh.e_commerce_platform.entity.Category;
 import com.anh.e_commerce_platform.repository.ProductRepository;
+import com.anh.e_commerce_platform.service.UserService;
 import com.anh.e_commerce_platform.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,10 +17,13 @@ public class DataInitializer implements CommandLineRunner {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserService userService;
 
-    public DataInitializer(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public DataInitializer(ProductRepository productRepository, CategoryRepository categoryRepository,
+            UserService userService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -77,5 +83,38 @@ public class DataInitializer implements CommandLineRunner {
         productRepository.save(javaBook);
 
         System.out.println("✅ Données de test créées : " + productRepository.count() + " produits");
+
+        // Créer un utilisateur admin par défaut
+        if (!userService.emailExists("admin@ecommerce.com"))
+
+        {
+            User admin = new User();
+            admin.setFirstName("Admin");
+            admin.setLastName("System");
+            admin.setEmail("admin@ecommerce.com");
+            admin.setPassword("admin123");
+            admin.setRole(Role.ADMIN);
+            admin.setPhone("0000000000");
+            admin.setAddress("Système");
+
+            userService.createUser(admin);
+            System.out.println("✅ Utilisateur admin créé : admin@ecommerce.com / admin123");
+        }
+
+        // Créer un utilisateur test par défaut
+        if (!userService.emailExists("john@test.com")) {
+            User user = new User();
+            user.setFirstName("John");
+            user.setLastName("Doe");
+            user.setEmail("john@test.com");
+            user.setPassword("password123");
+            user.setRole(Role.USER); // Rôle USER par défaut
+            user.setPhone("0123456789");
+            user.setAddress("123 rue Test");
+
+            userService.createUser(user);
+            System.out.println("✅ Utilisateur test créé : john@test.com / password123");
+        }
+
     }
 }

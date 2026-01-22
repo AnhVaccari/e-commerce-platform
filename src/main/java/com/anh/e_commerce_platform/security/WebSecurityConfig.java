@@ -28,7 +28,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Auth endpoints libres
                         .requestMatchers("/api/products/**").permitAll() // Produits libres (temporaire)
-                        .requestMatchers("/h2-console/**").permitAll() // H2 console libre
+                        .requestMatchers("/h2-console/**").permitAll()// H2 console libre
+                        .requestMatchers("/api/users/**").hasRole("ADMIN") // Seuls les admins peuvent acceder aux
+                                                                           // utilisateurs
                         .anyRequest().authenticated())
                 .headers(headers -> headers
                         .frameOptions(frameOptions -> frameOptions.disable())) // Pour H2 console
