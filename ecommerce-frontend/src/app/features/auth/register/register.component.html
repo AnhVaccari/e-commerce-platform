@@ -1,0 +1,149 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>Create Account</h1>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Email Field -->
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          [attr.aria-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        >
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          @if (registerForm.get('email')?.hasError('required')) {
+            <div class="error">Email is required</div>
+          }
+          @if (registerForm.get('email')?.hasError('email')) {
+            <div class="error">Please enter a valid email address</div>
+          }
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-field">
+        <label for="password">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            [attr.aria-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          >
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            aria-label="Toggle password visibility"
+          >
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+
+        <!-- Password Requirements (shown always) -->
+        <ul class="password-requirements">
+          <li [class.met]="passwordRequirements.minLength">At least 8 characters</li>
+          <li [class.met]="passwordRequirements.hasNumber">Contains a number</li>
+          <li [class.met]="passwordRequirements.hasLetter">Contains a letter</li>
+        </ul>
+
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          @if (registerForm.get('password')?.hasError('required')) {
+            <div class="error">Password is required</div>
+          }
+          @if (registerForm.get('password')?.hasError('minLength') || registerForm.get('password')?.hasError('pattern')) {
+            <div class="error">Password must meet all requirements above</div>
+          }
+        }
+      </div>
+
+      <!-- First Name Field -->
+      <div class="form-field">
+        <label for="firstName">First Name</label>
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          [attr.aria-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+        >
+        @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
+          <div class="error">First name is required</div>
+        }
+      </div>
+
+      <!-- Last Name Field -->
+      <div class="form-field">
+        <label for="lastName">Last Name</label>
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          [attr.aria-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+        >
+        @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
+          <div class="error">Last name is required</div>
+        }
+      </div>
+
+      <!-- Phone Field (Optional) -->
+      <div class="form-field">
+        <label for="phone">Phone (optional)</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+        >
+      </div>
+
+      <!-- Address Field (Optional) -->
+      <div class="form-field">
+        <label for="address">Address (optional)</label>
+        <input
+          id="address"
+          type="text"
+          formControlName="address"
+        >
+      </div>
+
+      <!-- Success Message -->
+      @if (successMessage) {
+        <div class="alert alert-success">
+          {{ successMessage }}
+        </div>
+      }
+
+      <!-- Error Message -->
+      @if (errorMessage) {
+        <div class="alert alert-error">
+          {{ errorMessage }}
+          @if (errorMessage.includes('already registered')) {
+            <a routerLink="/login" class="error-link">Log in</a>
+          }
+          @if (errorMessage.includes('Network')) {
+            <button type="button" class="retry-button" (click)="retry()">Retry</button>
+          }
+        </div>
+      }
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="isLoading"
+      >
+        @if (isLoading) {
+          <span class="spinner"></span>
+          <span>Creating account...</span>
+        } @else {
+          <span>Create Account</span>
+        }
+      </button>
+    </form>
+
+    <p class="form-footer">
+      Already have an account? <a routerLink="/login">Log in</a>
+    </p>
+  </div>
+</div>
