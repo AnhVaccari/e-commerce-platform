@@ -1,0 +1,78 @@
+<div class="admin-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Admin Panel</h2>
+    <nav>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Dashboard
+      </a>
+      <a routerLink="/admin/products" routerLinkActive="active">
+        Products
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active">
+        Users
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading dashboard data...</p>
+      </div>
+    }
+
+    <!-- Summary Cards -->
+    @if (!isLoading()) {
+      <div class="summary-cards">
+        <!-- Products Card -->
+        <div class="summary-card">
+          <div class="card-icon">📦</div>
+          <div class="card-content">
+            <h3>{{ totalProducts() }}</h3>
+            <p>Products</p>
+            <span class="subtext">{{ lowStockProducts() }} low stock</span>
+          </div>
+          <a routerLink="/admin/products" class="card-link">Manage →</a>
+        </div>
+
+        <!-- Orders Card -->
+        <div class="summary-card">
+          <div class="card-icon">📋</div>
+          <div class="card-content">
+            <h3>{{ totalOrders() }}</h3>
+            <p>Orders</p>
+            <span class="subtext">{{ pendingOrders() }} pending</span>
+          </div>
+          <a routerLink="/admin/orders" class="card-link">Manage →</a>
+        </div>
+
+        <!-- Users Card -->
+        <div class="summary-card">
+          <div class="card-icon">👥</div>
+          <div class="card-content">
+            <h3>{{ totalUsers() }}</h3>
+            <p>Users</p>
+            <span class="subtext">{{ adminUsers() }} admins</span>
+          </div>
+          <a routerLink="/admin/users" class="card-link">Manage →</a>
+        </div>
+      </div>
+    }
+  </main>
+</div>
+
+<!-- Toast Notifications -->
+<app-toast></app-toast>
