@@ -1,24 +1,18 @@
 <div class="admin-layout">
   <!-- Sidebar Navigation -->
   <aside class="sidebar">
-    <h2 class="sidebar-title">Panneau Admin</h2>
+    <h2 class="sidebar-title">Dashboard</h2>
     <nav>
       <a
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Tableau de bord
+        Dashboard
       </a>
-      <a routerLink="/admin/products" routerLinkActive="active">
-        Produits
-      </a>
-      <a routerLink="/admin/orders" routerLinkActive="active">
-        Commandes
-      </a>
-      <a routerLink="/admin/users" routerLinkActive="active">
-        Utilisateurs
-      </a>
+      <a routerLink="/admin/products" routerLinkActive="active"> Produits </a>
+      <a routerLink="/admin/orders" routerLinkActive="active"> Commandes </a>
+      <a routerLink="/admin/users" routerLinkActive="active"> Utilisateurs </a>
     </nav>
   </aside>
 
@@ -47,11 +41,7 @@
 
       <div class="filter-group">
         <label for="category">Filtrer par catégorie :</label>
-        <select
-          id="category"
-          (change)="onCategoryFilter($event)"
-          class="category-select"
-        >
+        <select id="category" (change)="onCategoryFilter($event)" class="category-select">
           <option value="">Toutes les catégories</option>
           @for (category of categories(); track category.id) {
             <option [value]="category.id">{{ category.name }}</option>
@@ -117,9 +107,11 @@
                 <td>{{ product.id }}</td>
                 <td class="product-name">{{ product.name }}</td>
                 <td class="product-description">
-                  {{ product.description.length > 50
-                     ? product.description.substring(0, 50) + '...'
-                     : product.description }}
+                  {{
+                    product.description.length > 50
+                      ? product.description.substring(0, 50) + '...'
+                      : product.description
+                  }}
                 </td>
                 <td class="product-price">{{ product.price.toFixed(2) }}€</td>
                 <td class="product-stock" [class.low-stock]="product.stock < 10">
@@ -127,18 +119,10 @@
                 </td>
                 <td>{{ product.category.name }}</td>
                 <td class="actions">
-                  <button
-                    type="button"
-                    class="btn-edit"
-                    (click)="openEditDialog(product)"
-                  >
+                  <button type="button" class="btn-edit" (click)="openEditDialog(product)">
                     Modifier
                   </button>
-                  <button
-                    type="button"
-                    class="btn-delete"
-                    (click)="deleteProduct(product)"
-                  >
+                  <button type="button" class="btn-delete" (click)="deleteProduct(product)">
                     Supprimer
                   </button>
                 </td>
@@ -159,8 +143,10 @@
           Précédent
         </button>
         <span class="page-info">
-          Page {{ currentPage() + 1 }} sur {{ totalPages() }}
-          ({{ filteredProducts().length }} produits)
+          Page {{ currentPage() + 1 }} sur {{ totalPages() }} ({{
+            filteredProducts().length
+          }}
+          produits)
         </span>
         <button
           type="button"
@@ -178,7 +164,11 @@
       <div class="empty-state">
         @if (searchTerm() || categoryFilter() !== null) {
           <p>Aucun produit ne correspond à vos filtres.</p>
-          <button type="button" class="btn-secondary" (click)="searchTerm.set(''); categoryFilter.set(null)">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="searchTerm.set(''); categoryFilter.set(null)"
+          >
             Effacer les filtres
           </button>
         } @else {
@@ -200,10 +190,7 @@
 ></app-product-form-dialog>
 
 <!-- Confirm Dialog -->
-<app-confirm-dialog
-  #confirmDialog
-  (confirmed)="confirmDelete()"
-></app-confirm-dialog>
+<app-confirm-dialog #confirmDialog (confirmed)="confirmDelete()"></app-confirm-dialog>
 
 <!-- Toast Notifications -->
 <app-toast></app-toast>

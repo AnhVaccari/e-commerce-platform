@@ -1,14 +1,14 @@
 <div class="admin-layout">
   <!-- Sidebar Navigation -->
   <aside class="sidebar">
-    <h2 class="sidebar-title">Panneau Admin</h2>
+    <h2 class="sidebar-title">Dashboard</h2>
     <nav>
       <a
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Tableau de bord
+        Dashboard
       </a>
       <a routerLink="/admin/products" routerLinkActive="active">
         Produits
@@ -24,7 +24,7 @@
 
   <!-- Main Content -->
   <main class="main-content">
-    <h1>Tableau de bord</h1>
+    <h1>Dashboard</h1>
 
     <!-- Loading State -->
     @if (isLoading()) {
