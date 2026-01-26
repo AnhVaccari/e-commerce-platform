@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
         <p>{{ message }}</p>
         <div class="dialog-actions">
           <button type="button" class="btn-secondary" (click)="cancel()">
-            Cancel
+            Annuler
           </button>
           <button type="button" class="btn-danger" (click)="confirm()">
             {{ confirmText }}
@@ -29,9 +29,9 @@ export class ConfirmDialogComponent {
 
   title = '';
   message = '';
-  confirmText = 'Confirm';
+  confirmText = 'Confirmer';
 
-  open(title: string, message: string, confirmText = 'Confirm'): void {
+  open(title: string, message: string, confirmText = 'Confirmer'): void {
     this.title = title;
     this.message = message;
     this.confirmText = confirmText;

@@ -1,6 +1,6 @@
 <div class="auth-container">
   <div class="auth-card">
-    <h1>Create Account</h1>
+    <h1>Créer un compte</h1>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <!-- Email Field -->
@@ -14,17 +14,17 @@
         >
         @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
           @if (registerForm.get('email')?.hasError('required')) {
-            <div class="error">Email is required</div>
+            <div class="error">L'email est requis</div>
           }
           @if (registerForm.get('email')?.hasError('email')) {
-            <div class="error">Please enter a valid email address</div>
+            <div class="error">Veuillez entrer une adresse email valide</div>
           }
         }
       </div>
 
       <!-- Password Field -->
       <div class="form-field">
-        <label for="password">Password</label>
+        <label for="password">Mot de passe</label>
         <div class="password-input-wrapper">
           <input
             id="password"
@@ -36,32 +36,32 @@
             type="button"
             class="password-toggle"
             (click)="togglePasswordVisibility()"
-            aria-label="Toggle password visibility"
+            aria-label="Afficher/masquer le mot de passe"
           >
-            {{ showPassword ? 'Hide' : 'Show' }}
+            {{ showPassword ? 'Masquer' : 'Afficher' }}
           </button>
         </div>
 
         <!-- Password Requirements (shown always) -->
         <ul class="password-requirements">
-          <li [class.met]="passwordRequirements.minLength">At least 8 characters</li>
-          <li [class.met]="passwordRequirements.hasNumber">Contains a number</li>
-          <li [class.met]="passwordRequirements.hasLetter">Contains a letter</li>
+          <li [class.met]="passwordRequirements.minLength">Au moins 8 caractères</li>
+          <li [class.met]="passwordRequirements.hasNumber">Contient un chiffre</li>
+          <li [class.met]="passwordRequirements.hasLetter">Contient une lettre</li>
         </ul>
 
         @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
           @if (registerForm.get('password')?.hasError('required')) {
-            <div class="error">Password is required</div>
+            <div class="error">Le mot de passe est requis</div>
           }
           @if (registerForm.get('password')?.hasError('minLength') || registerForm.get('password')?.hasError('pattern')) {
-            <div class="error">Password must meet all requirements above</div>
+            <div class="error">Le mot de passe doit respecter toutes les exigences ci-dessus</div>
           }
         }
       </div>
 
       <!-- First Name Field -->
       <div class="form-field">
-        <label for="firstName">First Name</label>
+        <label for="firstName">Prénom</label>
         <input
           id="firstName"
           type="text"
@@ -69,13 +69,13 @@
           [attr.aria-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
         >
         @if (registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched) {
-          <div class="error">First name is required</div>
+          <div class="error">Le prénom est requis</div>
         }
       </div>
 
       <!-- Last Name Field -->
       <div class="form-field">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">Nom</label>
         <input
           id="lastName"
           type="text"
@@ -83,13 +83,13 @@
           [attr.aria-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
         >
         @if (registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched) {
-          <div class="error">Last name is required</div>
+          <div class="error">Le nom est requis</div>
         }
       </div>
 
       <!-- Phone Field (Optional) -->
       <div class="form-field">
-        <label for="phone">Phone (optional)</label>
+        <label for="phone">Téléphone (optionnel)</label>
         <input
           id="phone"
           type="tel"
@@ -99,7 +99,7 @@
 
       <!-- Address Field (Optional) -->
       <div class="form-field">
-        <label for="address">Address (optional)</label>
+        <label for="address">Adresse (optionnel)</label>
         <input
           id="address"
           type="text"
@@ -118,11 +118,11 @@
       @if (errorMessage) {
         <div class="alert alert-error">
           {{ errorMessage }}
-          @if (errorMessage.includes('already registered')) {
-            <a routerLink="/login" class="error-link">Log in</a>
+          @if (errorMessage.includes('déjà utilisé')) {
+            <a routerLink="/login" class="error-link">Se connecter</a>
           }
-          @if (errorMessage.includes('Network')) {
-            <button type="button" class="retry-button" (click)="retry()">Retry</button>
+          @if (errorMessage.includes('réseau')) {
+            <button type="button" class="retry-button" (click)="retry()">Réessayer</button>
           }
         </div>
       }
@@ -135,15 +135,15 @@
       >
         @if (isLoading) {
           <span class="spinner"></span>
-          <span>Creating account...</span>
+          <span>Création en cours...</span>
         } @else {
-          <span>Create Account</span>
+          <span>Créer mon compte</span>
         }
       </button>
     </form>
 
     <p class="form-footer">
-      Already have an account? <a routerLink="/login">Log in</a>
+      Déjà un compte ? <a routerLink="/login">Se connecter</a>
     </p>
   </div>
 </div>

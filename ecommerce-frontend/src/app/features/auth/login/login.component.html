@@ -1,6 +1,6 @@
 <div class="auth-container">
   <div class="auth-card">
-    <h2>Login</h2>
+    <h2>Connexion</h2>
 
     <!-- Success Message -->
     @if (successMessage) {
@@ -13,8 +13,8 @@
     @if (errorMessage) {
       <div class="alert alert-error">
         {{ errorMessage }}
-        @if (errorMessage.includes('Network')) {
-          <button type="button" class="btn-retry" (click)="retry()">Retry</button>
+        @if (errorMessage.includes('réseau')) {
+          <button type="button" class="btn-retry" (click)="retry()">Réessayer</button>
         }
       </div>
     }
@@ -27,15 +27,15 @@
           type="email"
           id="email"
           formControlName="email"
-          placeholder="Enter your email"
+          placeholder="Entrez votre email"
         />
         @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
           <div class="error">
             @if (loginForm.get('email')?.hasError('required')) {
-              Email is required
+              L'email est requis
             }
             @if (loginForm.get('email')?.hasError('email')) {
-              Please enter a valid email address
+              Veuillez entrer une adresse email valide
             }
           </div>
         }
@@ -43,26 +43,26 @@
 
       <!-- Password Field -->
       <div class="form-field">
-        <label for="password">Password</label>
+        <label for="password">Mot de passe</label>
         <div class="password-input-wrapper">
           <input
             [type]="showPassword ? 'text' : 'password'"
             id="password"
             formControlName="password"
-            placeholder="Enter your password"
+            placeholder="Entrez votre mot de passe"
           />
           <button
             type="button"
             class="password-toggle"
             (click)="togglePasswordVisibility()"
-            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+            [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
           >
             {{ showPassword ? '👁️' : '👁️‍🗨️' }}
           </button>
         </div>
         @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
           <div class="error">
-            Password is required
+            Le mot de passe est requis
           </div>
         }
       </div>
@@ -74,23 +74,23 @@
           id="rememberMe"
           formControlName="rememberMe"
         />
-        <label for="rememberMe">Remember me</label>
+        <label for="rememberMe">Se souvenir de moi</label>
       </div>
 
       <!-- Submit Button -->
       <button type="submit" class="btn-primary" [disabled]="isLoading">
         @if (isLoading) {
           <span class="spinner"></span>
-          Logging in...
+          Connexion en cours...
         } @else {
-          Log In
+          Se connecter
         }
       </button>
     </form>
 
     <!-- Footer -->
     <div class="form-footer">
-      <p>Don't have an account? <a routerLink="/register">Sign up</a></p>
+      <p>Pas encore de compte ? <a routerLink="/register">Créer un compte</a></p>
     </div>
   </div>
 </div>

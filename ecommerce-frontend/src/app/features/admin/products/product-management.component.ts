@@ -136,11 +136,11 @@ export class ProductManagementComponent implements OnInit {
       error: (error) => {
         this.isLoading.set(false);
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to load products.', 'error');
+          this.toastService.show('Erreur réseau. Impossible de charger les produits.', 'error');
         } else if (error.status === 403) {
-          this.toastService.show('Unauthorized. Admin access required.', 'error');
+          this.toastService.show('Non autorisé. Accès administrateur requis.', 'error');
         } else {
-          this.toastService.show('Failed to load products. Please try again.', 'error');
+          this.toastService.show('Échec du chargement des produits. Veuillez réessayer.', 'error');
         }
       }
     });
@@ -153,9 +153,9 @@ export class ProductManagementComponent implements OnInit {
       },
       error: (error) => {
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to load categories.', 'error');
+          this.toastService.show('Erreur réseau. Impossible de charger les catégories.', 'error');
         } else {
-          this.toastService.show('Failed to load categories.', 'error');
+          this.toastService.show('Échec du chargement des catégories.', 'error');
         }
       }
     });
@@ -194,9 +194,9 @@ export class ProductManagementComponent implements OnInit {
   deleteProduct(product: Product): void {
     this.productToDelete = product;
     this.confirmDialog.open(
-      'Delete Product',
-      `Are you sure you want to delete "${product.name}"? This action cannot be undone.`,
-      'Delete'
+      'Supprimer le produit',
+      `Êtes-vous sûr de vouloir supprimer "${product.name}" ? Cette action est irréversible.`,
+      'Supprimer'
     );
   }
 
@@ -207,18 +207,18 @@ export class ProductManagementComponent implements OnInit {
 
     this.http.delete(`http://localhost:8080/api/products/${id}`).subscribe({
       next: () => {
-        this.toastService.show('Product deleted successfully', 'success');
+        this.toastService.show('Produit supprimé avec succès', 'success');
         this.productToDelete = null;
         this.loadProducts();
       },
       error: (error) => {
         this.productToDelete = null;
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to delete product.', 'error');
+          this.toastService.show('Erreur réseau. Impossible de supprimer le produit.', 'error');
         } else if (error.status === 403) {
-          this.toastService.show('Unauthorized. Admin access required.', 'error');
+          this.toastService.show('Non autorisé. Accès administrateur requis.', 'error');
         } else {
-          this.toastService.show('Failed to delete product. Please try again.', 'error');
+          this.toastService.show('Échec de la suppression. Veuillez réessayer.', 'error');
         }
       }
     });
@@ -226,7 +226,7 @@ export class ProductManagementComponent implements OnInit {
 
   onProductSaved(): void {
     this.loadProducts();
-    this.toastService.show('Product saved successfully', 'success');
+    this.toastService.show('Produit enregistré avec succès', 'success');
   }
 
   // Pagination methods

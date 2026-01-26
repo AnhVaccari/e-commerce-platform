@@ -1,23 +1,23 @@
 <div class="admin-layout">
   <!-- Sidebar Navigation -->
   <aside class="sidebar">
-    <h2 class="sidebar-title">Admin Panel</h2>
+    <h2 class="sidebar-title">Panneau Admin</h2>
     <nav>
       <a
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Dashboard
+        Tableau de bord
       </a>
       <a routerLink="/admin/products" routerLinkActive="active">
-        Products
+        Produits
       </a>
       <a routerLink="/admin/orders" routerLinkActive="active">
-        Orders
+        Commandes
       </a>
       <a routerLink="/admin/users" routerLinkActive="active">
-        Users
+        Utilisateurs
       </a>
     </nav>
   </aside>
@@ -25,9 +25,9 @@
   <!-- Main Content -->
   <main class="main-content">
     <div class="page-header">
-      <h1>User Management</h1>
+      <h1>Gestion des utilisateurs</h1>
       <button class="btn-primary" (click)="openAddDialog()">
-        Add User
+        Ajouter un utilisateur
       </button>
     </div>
 
@@ -35,15 +35,15 @@
     <div class="filters">
       <input
         type="text"
-        placeholder="Search by name or email"
+        placeholder="Rechercher par nom ou email"
         class="search-input"
         [value]="searchTerm()"
         (input)="onSearch($event)"
       />
       <select class="filter-select" [value]="roleFilter()" (change)="onRoleFilter($event)">
-        <option value="all">All Roles</option>
-        <option value="USER">Users</option>
-        <option value="ADMIN">Admins</option>
+        <option value="all">Tous les rôles</option>
+        <option value="USER">Utilisateurs</option>
+        <option value="ADMIN">Administrateurs</option>
       </select>
     </div>
 
@@ -51,7 +51,7 @@
     @if (isLoading()) {
       <div class="loading-container">
         <div class="spinner"></div>
-        <p>Loading users...</p>
+        <p>Chargement des utilisateurs...</p>
       </div>
     }
 
@@ -68,19 +68,19 @@
                 }
               </th>
               <th (click)="toggleSort('firstName')" class="sortable">
-                Name
+                Nom
                 @if (sortColumn() === 'firstName') {
                   <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
                 }
               </th>
               <th (click)="toggleSort('role')" class="sortable">
-                Role
+                Rôle
                 @if (sortColumn() === 'role') {
                   <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
                 }
               </th>
               <th (click)="toggleSort('createdAt')" class="sortable">
-                Created At
+                Créé le
                 @if (sortColumn() === 'createdAt') {
                   <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
                 }
@@ -104,16 +104,16 @@
                     class="btn-danger btn-sm"
                     (click)="deleteUser(user)"
                     [disabled]="user.email === currentUserEmail()"
-                    [title]="user.email === currentUserEmail() ? 'Cannot delete yourself' : 'Delete user'"
+                    [title]="user.email === currentUserEmail() ? 'Vous ne pouvez pas vous supprimer' : 'Supprimer l\'utilisateur'"
                   >
-                    Delete
+                    Supprimer
                   </button>
                 </td>
               </tr>
             } @empty {
               <tr>
                 <td colspan="5" class="empty-state">
-                  No users found
+                  Aucun utilisateur trouvé
                 </td>
               </tr>
             }
@@ -129,17 +129,17 @@
             (click)="prevPage()"
             [disabled]="currentPage() === 0"
           >
-            Previous
+            Précédent
           </button>
           <span class="page-info">
-            Page {{ currentPage() + 1 }} of {{ totalPages() }}
+            Page {{ currentPage() + 1 }} sur {{ totalPages() }}
           </span>
           <button
             class="btn-secondary btn-sm"
             (click)="nextPage()"
             [disabled]="currentPage() >= totalPages() - 1"
           >
-            Next
+            Suivant
           </button>
         </div>
       }

@@ -1,36 +1,36 @@
 <div class="admin-layout">
   <!-- Sidebar Navigation -->
   <aside class="sidebar">
-    <h2 class="sidebar-title">Admin Panel</h2>
+    <h2 class="sidebar-title">Panneau Admin</h2>
     <nav>
       <a
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Dashboard
+        Tableau de bord
       </a>
       <a routerLink="/admin/products" routerLinkActive="active">
-        Products
+        Produits
       </a>
       <a routerLink="/admin/orders" routerLinkActive="active">
-        Orders
+        Commandes
       </a>
       <a routerLink="/admin/users" routerLinkActive="active">
-        Users
+        Utilisateurs
       </a>
     </nav>
   </aside>
 
   <!-- Main Content -->
   <main class="main-content">
-    <h1>Admin Dashboard</h1>
+    <h1>Tableau de bord</h1>
 
     <!-- Loading State -->
     @if (isLoading()) {
       <div class="loading-container">
         <div class="spinner"></div>
-        <p>Loading dashboard data...</p>
+        <p>Chargement des données...</p>
       </div>
     }
 
@@ -42,10 +42,10 @@
           <div class="card-icon">📦</div>
           <div class="card-content">
             <h3>{{ totalProducts() }}</h3>
-            <p>Products</p>
-            <span class="subtext">{{ lowStockProducts() }} low stock</span>
+            <p>Produits</p>
+            <span class="subtext">{{ lowStockProducts() }} stock faible</span>
           </div>
-          <a routerLink="/admin/products" class="card-link">Manage →</a>
+          <a routerLink="/admin/products" class="card-link">Gérer →</a>
         </div>
 
         <!-- Orders Card -->
@@ -53,10 +53,10 @@
           <div class="card-icon">📋</div>
           <div class="card-content">
             <h3>{{ totalOrders() }}</h3>
-            <p>Orders</p>
-            <span class="subtext">{{ pendingOrders() }} pending</span>
+            <p>Commandes</p>
+            <span class="subtext">{{ pendingOrders() }} en attente</span>
           </div>
-          <a routerLink="/admin/orders" class="card-link">Manage →</a>
+          <a routerLink="/admin/orders" class="card-link">Gérer →</a>
         </div>
 
         <!-- Users Card -->
@@ -64,10 +64,10 @@
           <div class="card-icon">👥</div>
           <div class="card-content">
             <h3>{{ totalUsers() }}</h3>
-            <p>Users</p>
+            <p>Utilisateurs</p>
             <span class="subtext">{{ adminUsers() }} admins</span>
           </div>
-          <a routerLink="/admin/users" class="card-link">Manage →</a>
+          <a routerLink="/admin/users" class="card-link">Gérer →</a>
         </div>
       </div>
     }

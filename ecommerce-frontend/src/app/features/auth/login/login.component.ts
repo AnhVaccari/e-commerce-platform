@@ -48,7 +48,7 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: () => {
-        this.successMessage = 'Welcome back!';
+        this.successMessage = 'Bienvenue !';
         setTimeout(() => {
           this.router.navigate([this.returnUrl]);
         }, 1500);
@@ -60,11 +60,11 @@ export class LoginComponent {
         // Handle different error types
         if (error.status === 0 || error.status >= 500) {
           this.errorMessage =
-            'Network error. Please check your connection and try again.';
+            'Erreur réseau. Veuillez vérifier votre connexion et réessayer.';
         } else if (error.status === 401) {
-          this.errorMessage = 'Invalid email or password.';
+          this.errorMessage = 'Email ou mot de passe incorrect.';
         } else {
-          this.errorMessage = 'Login failed. Please try again.';
+          this.errorMessage = 'Échec de la connexion. Veuillez réessayer.';
         }
       },
     });

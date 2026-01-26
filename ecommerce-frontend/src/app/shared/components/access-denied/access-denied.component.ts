@@ -9,10 +9,10 @@ import { RouterModule } from '@angular/router';
   template: `
     <div class="access-denied-container">
       <div class="access-denied-content">
-        <h1>Access Denied</h1>
-        <p>You do not have permission to access this page.</p>
-        <p>Please contact an administrator if you believe this is an error.</p>
-        <a routerLink="/" class="home-link">Return to Home</a>
+        <h1>Accès refusé</h1>
+        <p>Vous n'avez pas la permission d'accéder à cette page.</p>
+        <p>Contactez un administrateur si vous pensez qu'il s'agit d'une erreur.</p>
+        <a routerLink="/" class="home-link">Retour à l'accueil</a>
       </div>
     </div>
   `,

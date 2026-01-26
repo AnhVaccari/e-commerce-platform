@@ -123,7 +123,7 @@ export class UserManagementComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading users:', error);
-        this.toastService.show('Failed to load users', 'error');
+        this.toastService.show('Échec du chargement des utilisateurs', 'error');
         this.isLoading.set(false);
       }
     });
@@ -157,14 +157,14 @@ export class UserManagementComponent implements OnInit {
   deleteUser(user: User): void {
     // Check if trying to delete self
     if (user.email === this.currentUserEmail()) {
-      this.toastService.show('Cannot delete yourself', 'error');
+      this.toastService.show('Vous ne pouvez pas vous supprimer vous-même', 'error');
       return;
     }
 
     this.confirmDialog.open(
-      'Delete User',
-      `Are you sure you want to delete ${user.firstName} ${user.lastName}?`,
-      'Delete'
+      'Supprimer l\'utilisateur',
+      `Êtes-vous sûr de vouloir supprimer ${user.firstName} ${user.lastName} ?`,
+      'Supprimer'
     );
 
     // Store user ID for confirmation handler
@@ -177,13 +177,13 @@ export class UserManagementComponent implements OnInit {
 
     this.http.delete(`http://localhost:8080/api/users/${userId}`).subscribe({
       next: () => {
-        this.toastService.show('User deleted successfully', 'success');
+        this.toastService.show('Utilisateur supprimé avec succès', 'success');
         this.loadUsers();
         this.deletingUserId.set(null);
       },
       error: (error) => {
         console.error('Error deleting user:', error);
-        this.toastService.show('Failed to delete user', 'error');
+        this.toastService.show('Échec de la suppression de l\'utilisateur', 'error');
         this.deletingUserId.set(null);
       }
     });
@@ -191,7 +191,7 @@ export class UserManagementComponent implements OnInit {
 
   onUserSaved(): void {
     this.loadUsers();
-    this.toastService.show('User created successfully', 'success');
+    this.toastService.show('Utilisateur créé avec succès', 'success');
   }
 
   nextPage(): void {

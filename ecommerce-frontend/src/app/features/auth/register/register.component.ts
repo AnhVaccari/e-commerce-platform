@@ -72,7 +72,7 @@ export class RegisterComponent {
 
     this.authService.register(request).subscribe({
       next: () => {
-        this.successMessage = 'Registration successful! Redirecting to login...';
+        this.successMessage = 'Inscription réussie ! Redirection vers la connexion...';
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);
@@ -82,11 +82,11 @@ export class RegisterComponent {
         this.registerForm.enable();
 
         if (error.status === 409) {
-          this.errorMessage = 'Email already registered.';
+          this.errorMessage = 'Cet email est déjà utilisé.';
         } else if (error.status === 0 || error.status >= 500) {
-          this.errorMessage = 'Network error. Please check your connection and try again.';
+          this.errorMessage = 'Erreur réseau. Veuillez vérifier votre connexion et réessayer.';
         } else {
-          this.errorMessage = 'Registration failed. Please try again.';
+          this.errorMessage = 'Échec de l\'inscription. Veuillez réessayer.';
         }
       }
     });

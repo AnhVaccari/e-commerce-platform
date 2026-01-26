@@ -1,39 +1,39 @@
 <div class="admin-layout">
   <!-- Sidebar Navigation -->
   <aside class="sidebar">
-    <h2 class="sidebar-title">Admin Panel</h2>
+    <h2 class="sidebar-title">Panneau Admin</h2>
     <nav>
       <a
         routerLink="/admin/dashboard"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        Dashboard
+        Tableau de bord
       </a>
       <a routerLink="/admin/products" routerLinkActive="active">
-        Products
+        Produits
       </a>
       <a routerLink="/admin/orders" routerLinkActive="active">
-        Orders
+        Commandes
       </a>
       <a routerLink="/admin/users" routerLinkActive="active">
-        Users
+        Utilisateurs
       </a>
     </nav>
   </aside>
 
   <!-- Main Content -->
   <main class="main-content">
-    <h1>Order Management</h1>
+    <h1>Gestion des commandes</h1>
 
     <!-- Filters Section -->
     <div class="filters-section">
       <div class="filter-group">
-        <label for="search">Search by Email:</label>
+        <label for="search">Rechercher par email :</label>
         <input
           type="text"
           id="search"
-          placeholder="Search by customer email..."
+          placeholder="Rechercher par email client..."
           [value]="searchTerm()"
           (input)="onSearch($event)"
           class="search-input"
@@ -41,14 +41,14 @@
       </div>
 
       <div class="filter-group">
-        <label for="statusFilter">Status:</label>
+        <label for="statusFilter">Statut :</label>
         <select
           id="statusFilter"
           [value]="statusFilter()"
           (change)="onStatusFilter($event)"
           class="filter-select"
         >
-          <option value="all">All Statuses</option>
+          <option value="all">Tous les statuts</option>
           @for (status of ORDER_STATUSES; track status) {
             <option [value]="status">{{ STATUS_LABELS[status] }}</option>
           }
@@ -60,7 +60,7 @@
     @if (isLoading()) {
       <div class="loading-container">
         <div class="spinner"></div>
-        <p>Loading orders...</p>
+        <p>Chargement des commandes...</p>
       </div>
     }
 
@@ -70,7 +70,7 @@
         <table class="orders-table">
           <thead>
             <tr>
-              <th>Order ID</th>
+              <th>N° Commande</th>
               <th
                 (click)="toggleSort('orderDate')"
                 class="sortable"
@@ -81,7 +81,7 @@
                   <span class="sort-arrow">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
                 }
               </th>
-              <th>Customer</th>
+              <th>Client</th>
               <th
                 (click)="toggleSort('totalAmount')"
                 class="sortable"
@@ -97,7 +97,7 @@
                 class="sortable"
                 [class.sorted]="sortColumn() === 'status'"
               >
-                Status
+                Statut
                 @if (sortColumn() === 'status') {
                   <span class="sort-arrow">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
                 }
@@ -110,9 +110,9 @@
               <tr>
                 <td colspan="6" class="no-data">
                   @if (statusFilter() !== 'all' || searchTerm()) {
-                    No orders match the current filters.
+                    Aucune commande ne correspond aux filtres actuels.
                   } @else {
-                    No orders found.
+                    Aucune commande trouvée.
                   }
                 </td>
               </tr>
@@ -122,7 +122,7 @@
                 <td class="order-id">#{{ order.id }}</td>
                 <td>{{ order.orderDate | date: 'short' }}</td>
                 <td>{{ order.user.email }}</td>
-                <td class="amount">${{ order.totalAmount | number: '1.2-2' }}</td>
+                <td class="amount">{{ order.totalAmount | number: '1.2-2' }}€</td>
                 <td>
                   <span class="status-badge status-{{ order.status.toLowerCase() }}">
                     {{ STATUS_LABELS[order.status] }}
@@ -159,18 +159,18 @@
             [disabled]="currentPage() === 0"
             class="pagination-btn"
           >
-            ← Previous
+            ← Précédent
           </button>
           <span class="pagination-info">
-            Page {{ currentPage() + 1 }} of {{ totalPages() }}
-            ({{ filteredOrders().length }} order{{ filteredOrders().length !== 1 ? 's' : '' }})
+            Page {{ currentPage() + 1 }} sur {{ totalPages() }}
+            ({{ filteredOrders().length }} commande{{ filteredOrders().length !== 1 ? 's' : '' }})
           </span>
           <button
             (click)="nextPage()"
             [disabled]="currentPage() >= totalPages() - 1"
             class="pagination-btn"
           >
-            Next →
+            Suivant →
           </button>
         </div>
       }

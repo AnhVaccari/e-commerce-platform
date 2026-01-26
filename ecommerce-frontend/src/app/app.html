@@ -1,10 +1,26 @@
 <div class="app-container">
   <header>
-    <h1>E-Commerce Platform</h1>
+    <div class="header-content">
+      <a routerLink="/" class="logo">
+        <h1>E-Commerce Platform</h1>
+      </a>
+      <nav class="main-nav">
+        @if (isAuthenticated()) {
+          <span class="user-info">{{ currentUser()?.firstName || currentUser()?.email }}</span>
+          <a routerLink="/products" class="nav-link">Catalogue</a>
+          @if (currentUser()?.role === 'ADMIN') {
+            <a routerLink="/admin" class="nav-link">Admin</a>
+          }
+          <button class="btn-logout" (click)="logout()">Déconnexion</button>
+        } @else {
+          <a routerLink="/login" class="nav-link">Connexion</a>
+          <a routerLink="/register" class="nav-link btn-register">S'inscrire</a>
+        }
+      </nav>
+    </div>
   </header>
 
   <main>
-    <app-product-list></app-product-list>
-    <app-cart></app-cart>
+    <router-outlet></router-outlet>
   </main>
 </div>

@@ -21,11 +21,11 @@ export class OrderManagementComponent implements OnInit {
   // Constants
   readonly ORDER_STATUSES: OrderStatus[] = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
   readonly STATUS_LABELS: Record<OrderStatus, string> = {
-    PENDING: 'Pending',
-    CONFIRMED: 'Confirmed',
-    SHIPPED: 'Shipped',
-    DELIVERED: 'Delivered',
-    CANCELLED: 'Cancelled'
+    PENDING: 'En attente',
+    CONFIRMED: 'Confirmé',
+    SHIPPED: 'Expédié',
+    DELIVERED: 'Livré',
+    CANCELLED: 'Annulé'
   };
 
   // State signals
@@ -116,11 +116,11 @@ export class OrderManagementComponent implements OnInit {
         this.isLoading.set(false);
 
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to load orders.', 'error');
+          this.toastService.show('Erreur réseau. Impossible de charger les commandes.', 'error');
         } else if (error.status === 403) {
-          this.toastService.show('Unauthorized. Admin access required.', 'error');
+          this.toastService.show('Non autorisé. Accès administrateur requis.', 'error');
         } else {
-          this.toastService.show('Failed to load orders. Please try again.', 'error');
+          this.toastService.show('Échec du chargement des commandes. Veuillez réessayer.', 'error');
         }
       }
     });
@@ -165,7 +165,7 @@ export class OrderManagementComponent implements OnInit {
         );
         this.updatingOrderId.set(null);
         this.toastService.show(
-          `Order #${order.id} status updated to ${this.STATUS_LABELS[newStatus]}`,
+          `Commande #${order.id} mise à jour : ${this.STATUS_LABELS[newStatus]}`,
           'success'
         );
       },
@@ -173,13 +173,13 @@ export class OrderManagementComponent implements OnInit {
         this.updatingOrderId.set(null);
 
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to update order status.', 'error');
+          this.toastService.show('Erreur réseau. Impossible de mettre à jour le statut.', 'error');
         } else if (error.status === 403) {
-          this.toastService.show('Unauthorized. Cannot update order.', 'error');
+          this.toastService.show('Non autorisé. Impossible de modifier la commande.', 'error');
         } else if (error.status === 404) {
-          this.toastService.show('Order not found.', 'error');
+          this.toastService.show('Commande introuvable.', 'error');
         } else {
-          this.toastService.show('Failed to update order status. Please try again.', 'error');
+          this.toastService.show('Échec de la mise à jour du statut. Veuillez réessayer.', 'error');
         }
       }
     });

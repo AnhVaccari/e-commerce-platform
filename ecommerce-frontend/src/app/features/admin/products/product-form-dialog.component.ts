@@ -12,26 +12,26 @@ import { ToastService } from '../shared/toast/toast.service';
   template: `
     <dialog #dialog class="product-form-dialog" (cancel)="onCancel($event)">
       <div class="dialog-content">
-        <h3>{{ isEdit ? 'Edit Product' : 'Add New Product' }}</h3>
+        <h3>{{ isEdit ? 'Modifier le produit' : 'Ajouter un produit' }}</h3>
 
         <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
           <!-- Name Field -->
           <div class="form-field">
-            <label for="name">Product Name *</label>
+            <label for="name">Nom du produit *</label>
             <input
               type="text"
               id="name"
               formControlName="name"
-              placeholder="Enter product name"
+              placeholder="Entrez le nom du produit"
               [class.error]="productForm.get('name')?.touched && productForm.get('name')?.invalid"
             />
             @if (productForm.get('name')?.touched && productForm.get('name')?.invalid) {
               <span class="error-message">
                 @if (productForm.get('name')?.errors?.['required']) {
-                  Product name is required
+                  Le nom du produit est requis
                 }
                 @if (productForm.get('name')?.errors?.['minlength']) {
-                  Product name must be at least 3 characters
+                  Le nom doit contenir au moins 3 caractères
                 }
               </span>
             }
@@ -43,20 +43,20 @@ import { ToastService } from '../shared/toast/toast.service';
             <textarea
               id="description"
               formControlName="description"
-              placeholder="Enter product description"
+              placeholder="Entrez la description du produit"
               rows="4"
               [class.error]="productForm.get('description')?.touched && productForm.get('description')?.invalid"
             ></textarea>
             @if (productForm.get('description')?.touched && productForm.get('description')?.invalid) {
               <span class="error-message">
-                Product description is required
+                La description est requise
               </span>
             }
           </div>
 
           <!-- Price Field -->
           <div class="form-field">
-            <label for="price">Price ($) *</label>
+            <label for="price">Prix (€) *</label>
             <input
               type="number"
               id="price"
@@ -69,10 +69,10 @@ import { ToastService } from '../shared/toast/toast.service';
             @if (productForm.get('price')?.touched && productForm.get('price')?.invalid) {
               <span class="error-message">
                 @if (productForm.get('price')?.errors?.['required']) {
-                  Price is required
+                  Le prix est requis
                 }
                 @if (productForm.get('price')?.errors?.['min']) {
-                  Price must be 0 or greater
+                  Le prix doit être supérieur ou égal à 0
                 }
               </span>
             }
@@ -80,7 +80,7 @@ import { ToastService } from '../shared/toast/toast.service';
 
           <!-- Stock Field -->
           <div class="form-field">
-            <label for="stock">Stock Quantity *</label>
+            <label for="stock">Quantité en stock *</label>
             <input
               type="number"
               id="stock"
@@ -92,10 +92,10 @@ import { ToastService } from '../shared/toast/toast.service';
             @if (productForm.get('stock')?.touched && productForm.get('stock')?.invalid) {
               <span class="error-message">
                 @if (productForm.get('stock')?.errors?.['required']) {
-                  Stock quantity is required
+                  La quantité en stock est requise
                 }
                 @if (productForm.get('stock')?.errors?.['min']) {
-                  Stock must be 0 or greater
+                  Le stock doit être supérieur ou égal à 0
                 }
               </span>
             }
@@ -103,20 +103,20 @@ import { ToastService } from '../shared/toast/toast.service';
 
           <!-- Category Field -->
           <div class="form-field">
-            <label for="categoryId">Category *</label>
+            <label for="categoryId">Catégorie *</label>
             <select
               id="categoryId"
               formControlName="categoryId"
               [class.error]="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.invalid"
             >
-              <option [value]="null">Select a category</option>
+              <option [value]="null">Sélectionnez une catégorie</option>
               @for (category of categories; track category.id) {
                 <option [value]="category.id">{{ category.name }}</option>
               }
             </select>
             @if (productForm.get('categoryId')?.touched && productForm.get('categoryId')?.invalid) {
               <span class="error-message">
-                Category is required
+                La catégorie est requise
               </span>
             }
           </div>
@@ -124,14 +124,14 @@ import { ToastService } from '../shared/toast/toast.service';
           <!-- Action Buttons -->
           <div class="dialog-actions">
             <button type="button" class="btn-secondary" (click)="close()" [disabled]="isSubmitting">
-              Cancel
+              Annuler
             </button>
             <button type="submit" class="btn-primary" [disabled]="isSubmitting">
               @if (isSubmitting) {
                 <span class="spinner-small"></span>
-                Saving...
+                Enregistrement...
               } @else {
-                {{ isEdit ? 'Update' : 'Create' }} Product
+                {{ isEdit ? 'Modifier' : 'Créer' }}
               }
             </button>
           </div>
@@ -167,7 +167,7 @@ export class ProductFormDialogComponent {
       // Edit mode - but backend doesn't support PUT
       // Show toast message instead
       this.toastService.show(
-        'Edit feature requires backend support. Please delete and recreate the product for now.',
+        'La modification nécessite un support backend. Veuillez supprimer et recréer le produit pour le moment.',
         'info',
         5000
       );
@@ -231,13 +231,13 @@ export class ProductFormDialogComponent {
         this.isSubmitting = false;
 
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to save product.', 'error');
+          this.toastService.show('Erreur réseau. Impossible d\'enregistrer le produit.', 'error');
         } else if (error.status === 400) {
-          this.toastService.show('Invalid product data. Please check your inputs.', 'error');
+          this.toastService.show('Données produit invalides. Veuillez vérifier vos entrées.', 'error');
         } else if (error.status === 403) {
-          this.toastService.show('Unauthorized. Admin access required.', 'error');
+          this.toastService.show('Non autorisé. Accès administrateur requis.', 'error');
         } else {
-          this.toastService.show('Failed to save product. Please try again.', 'error');
+          this.toastService.show('Échec de l\'enregistrement. Veuillez réessayer.', 'error');
         }
       }
     });

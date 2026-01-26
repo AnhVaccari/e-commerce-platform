@@ -62,11 +62,11 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading.set(false);
 
         if (error.status === 0 || error.status >= 500) {
-          this.toastService.show('Network error. Unable to load dashboard data.', 'error');
+          this.toastService.show('Erreur réseau. Impossible de charger les données.', 'error');
         } else if (error.status === 403) {
-          this.toastService.show('Unauthorized. Admin access required.', 'error');
+          this.toastService.show('Non autorisé. Accès administrateur requis.', 'error');
         } else {
-          this.toastService.show('Failed to load dashboard data. Please try again.', 'error');
+          this.toastService.show('Échec du chargement. Veuillez réessayer.', 'error');
         }
       }
     });
