@@ -3,7 +3,7 @@ import { authGuard, roleGuard } from './core/guards';
 import { AccessDeniedComponent } from './shared/components/access-denied/access-denied.component';
 
 export const routes: Routes = [
-  // Public routes (no guards) - components to be created in Phase 4
+  // Public routes (no guards)
   {
     path: 'login',
     loadComponent: () =>
@@ -22,7 +22,17 @@ export const routes: Routes = [
   // Access denied page
   { path: 'access-denied', component: AccessDeniedComponent },
 
-  // Admin routes (auth + role) - to be fully configured in Phase 5
+  // Protected user routes (auth only)
+  {
+    path: 'products',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/products/products-page.component').then(
+        (m) => m.ProductsPageComponent
+      ),
+  },
+
+  // Admin routes (auth + role)
   {
     path: 'admin',
     canActivate: [authGuard, roleGuard],

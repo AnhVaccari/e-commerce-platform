@@ -1,13 +1,22 @@
-import { Component, signal } from '@angular/core';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { CartComponent } from './components/cart/cart.component';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [ProductListComponent, CartComponent],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, RouterLink],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('ecommerce-frontend');
+  private authService = inject(AuthService);
+
+  isAuthenticated = this.authService.isAuthenticated;
+  currentUser = this.authService.currentUser;
+
+  logout(): void {
+    this.authService.logout();
+  }
 }
