@@ -36,6 +36,27 @@ export const routes: Routes = [
             './features/admin/dashboard/admin-dashboard.component'
           ).then((m) => m.AdminDashboardComponent),
       },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import(
+            './features/admin/products/product-management.component'
+          ).then((m) => m.ProductManagementComponent),
+      },
+      {
+        path: 'orders',
+        loadComponent: () =>
+          import(
+            './features/admin/orders/order-management.component'
+          ).then((m) => m.OrderManagementComponent),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./features/admin/users/user-management.component').then(
+            (m) => m.UserManagementComponent
+          ),
+      },
     ],
   },
 

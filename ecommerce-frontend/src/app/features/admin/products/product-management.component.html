@@ -1,0 +1,209 @@
+<div class="admin-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Admin Panel</h2>
+    <nav>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Dashboard
+      </a>
+      <a routerLink="/admin/products" routerLinkActive="active">
+        Products
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active">
+        Users
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="header">
+      <h1>Product Management</h1>
+      <button type="button" class="btn-primary" (click)="openAddDialog()">
+        Add Product
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-group">
+        <label for="search">Search by name:</label>
+        <input
+          type="text"
+          id="search"
+          placeholder="Search products..."
+          [value]="searchTerm()"
+          (input)="onSearch($event)"
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="category">Filter by category:</label>
+        <select
+          id="category"
+          (change)="onCategoryFilter($event)"
+          class="category-select"
+        >
+          <option value="">All Categories</option>
+          @for (category of categories(); track category.id) {
+            <option [value]="category.id">{{ category.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading products...</p>
+      </div>
+    }
+
+    <!-- Products Table -->
+    @if (!isLoading() && paginatedProducts().length > 0) {
+      <div class="table-container">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th (click)="toggleSort('id')" class="sortable">
+                ID
+                @if (sortColumn() === 'id') {
+                  <span class="sort-arrow">
+                    {{ sortDirection() === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+              </th>
+              <th (click)="toggleSort('name')" class="sortable">
+                Name
+                @if (sortColumn() === 'name') {
+                  <span class="sort-arrow">
+                    {{ sortDirection() === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+              </th>
+              <th>Description</th>
+              <th (click)="toggleSort('price')" class="sortable">
+                Price
+                @if (sortColumn() === 'price') {
+                  <span class="sort-arrow">
+                    {{ sortDirection() === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+              </th>
+              <th (click)="toggleSort('stock')" class="sortable">
+                Stock
+                @if (sortColumn() === 'stock') {
+                  <span class="sort-arrow">
+                    {{ sortDirection() === 'asc' ? '↑' : '↓' }}
+                  </span>
+                }
+              </th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of paginatedProducts(); track product.id) {
+              <tr>
+                <td>{{ product.id }}</td>
+                <td class="product-name">{{ product.name }}</td>
+                <td class="product-description">
+                  {{ product.description.length > 50
+                     ? product.description.substring(0, 50) + '...'
+                     : product.description }}
+                </td>
+                <td class="product-price">${{ product.price.toFixed(2) }}</td>
+                <td class="product-stock" [class.low-stock]="product.stock < 10">
+                  {{ product.stock }}
+                </td>
+                <td>{{ product.category.name }}</td>
+                <td class="actions">
+                  <button
+                    type="button"
+                    class="btn-edit"
+                    (click)="openEditDialog(product)"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-delete"
+                    (click)="deleteProduct(product)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="previousPage()"
+          [disabled]="currentPage() === 0"
+        >
+          Previous
+        </button>
+        <span class="page-info">
+          Page {{ currentPage() + 1 }} of {{ totalPages() }}
+          ({{ filteredProducts().length }} products)
+        </span>
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="nextPage()"
+          [disabled]="currentPage() >= totalPages() - 1"
+        >
+          Next
+        </button>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!isLoading() && paginatedProducts().length === 0) {
+      <div class="empty-state">
+        @if (searchTerm() || categoryFilter() !== null) {
+          <p>No products found matching your filters.</p>
+          <button type="button" class="btn-secondary" (click)="searchTerm.set(''); categoryFilter.set(null)">
+            Clear Filters
+          </button>
+        } @else {
+          <p>No products available.</p>
+          <button type="button" class="btn-primary" (click)="openAddDialog()">
+            Add Your First Product
+          </button>
+        }
+      </div>
+    }
+  </main>
+</div>
+
+<!-- Product Form Dialog -->
+<app-product-form-dialog
+  #productFormDialog
+  [categories]="categories()"
+  (saved)="onProductSaved()"
+></app-product-form-dialog>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog
+  #confirmDialog
+  (confirmed)="confirmDelete()"
+></app-confirm-dialog>
+
+<!-- Toast Notifications -->
+<app-toast></app-toast>
