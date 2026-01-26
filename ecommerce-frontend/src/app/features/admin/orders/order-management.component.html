@@ -1,0 +1,182 @@
+<div class="admin-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Admin Panel</h2>
+    <nav>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Dashboard
+      </a>
+      <a routerLink="/admin/products" routerLinkActive="active">
+        Products
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active">
+        Users
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h1>Order Management</h1>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label for="search">Search by Email:</label>
+        <input
+          type="text"
+          id="search"
+          placeholder="Search by customer email..."
+          [value]="searchTerm()"
+          (input)="onSearch($event)"
+          class="search-input"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="statusFilter">Status:</label>
+        <select
+          id="statusFilter"
+          [value]="statusFilter()"
+          (change)="onStatusFilter($event)"
+          class="filter-select"
+        >
+          <option value="all">All Statuses</option>
+          @for (status of ORDER_STATUSES; track status) {
+            <option [value]="status">{{ STATUS_LABELS[status] }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading orders...</p>
+      </div>
+    }
+
+    <!-- Orders Table -->
+    @if (!isLoading()) {
+      <div class="table-container">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th
+                (click)="toggleSort('orderDate')"
+                class="sortable"
+                [class.sorted]="sortColumn() === 'orderDate'"
+              >
+                Date
+                @if (sortColumn() === 'orderDate') {
+                  <span class="sort-arrow">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th>Customer</th>
+              <th
+                (click)="toggleSort('totalAmount')"
+                class="sortable"
+                [class.sorted]="sortColumn() === 'totalAmount'"
+              >
+                Total
+                @if (sortColumn() === 'totalAmount') {
+                  <span class="sort-arrow">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th
+                (click)="toggleSort('status')"
+                class="sortable"
+                [class.sorted]="sortColumn() === 'status'"
+              >
+                Status
+                @if (sortColumn() === 'status') {
+                  <span class="sort-arrow">{{ sortDirection() === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (paginatedOrders().length === 0) {
+              <tr>
+                <td colspan="6" class="no-data">
+                  @if (statusFilter() !== 'all' || searchTerm()) {
+                    No orders match the current filters.
+                  } @else {
+                    No orders found.
+                  }
+                </td>
+              </tr>
+            }
+            @for (order of paginatedOrders(); track order.id) {
+              <tr>
+                <td class="order-id">#{{ order.id }}</td>
+                <td>{{ order.orderDate | date: 'short' }}</td>
+                <td>{{ order.user.email }}</td>
+                <td class="amount">${{ order.totalAmount | number: '1.2-2' }}</td>
+                <td>
+                  <span class="status-badge status-{{ order.status.toLowerCase() }}">
+                    {{ STATUS_LABELS[order.status] }}
+                  </span>
+                </td>
+                <td class="actions-cell">
+                  <div class="status-update-wrapper">
+                    <select
+                      [value]="order.status"
+                      (change)="updateOrderStatus(order, $any($event.target).value)"
+                      class="status-select"
+                      [disabled]="updatingOrderId() === order.id"
+                    >
+                      @for (status of ORDER_STATUSES; track status) {
+                        <option [value]="status">{{ STATUS_LABELS[status] }}</option>
+                      }
+                    </select>
+                    @if (updatingOrderId() === order.id) {
+                      <span class="inline-spinner"></span>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 0) {
+        <div class="pagination">
+          <button
+            (click)="previousPage()"
+            [disabled]="currentPage() === 0"
+            class="pagination-btn"
+          >
+            ← Previous
+          </button>
+          <span class="pagination-info">
+            Page {{ currentPage() + 1 }} of {{ totalPages() }}
+            ({{ filteredOrders().length }} order{{ filteredOrders().length !== 1 ? 's' : '' }})
+          </span>
+          <button
+            (click)="nextPage()"
+            [disabled]="currentPage() >= totalPages() - 1"
+            class="pagination-btn"
+          >
+            Next →
+          </button>
+        </div>
+      }
+    }
+  </main>
+</div>
+
+<!-- Toast Notifications -->
+<app-toast></app-toast>
