@@ -1,0 +1,157 @@
+<div class="admin-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Admin Panel</h2>
+    <nav>
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Dashboard
+      </a>
+      <a routerLink="/admin/products" routerLinkActive="active">
+        Products
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active">
+        Users
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1>User Management</h1>
+      <button class="btn-primary" (click)="openAddDialog()">
+        Add User
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <input
+        type="text"
+        placeholder="Search by name or email"
+        class="search-input"
+        [value]="searchTerm()"
+        (input)="onSearch($event)"
+      />
+      <select class="filter-select" [value]="roleFilter()" (change)="onRoleFilter($event)">
+        <option value="all">All Roles</option>
+        <option value="USER">Users</option>
+        <option value="ADMIN">Admins</option>
+      </select>
+    </div>
+
+    <!-- Loading State -->
+    @if (isLoading()) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading users...</p>
+      </div>
+    }
+
+    <!-- Users Table -->
+    @if (!isLoading()) {
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th (click)="toggleSort('email')" class="sortable">
+                Email
+                @if (sortColumn() === 'email') {
+                  <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                }
+              </th>
+              <th (click)="toggleSort('firstName')" class="sortable">
+                Name
+                @if (sortColumn() === 'firstName') {
+                  <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                }
+              </th>
+              <th (click)="toggleSort('role')" class="sortable">
+                Role
+                @if (sortColumn() === 'role') {
+                  <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                }
+              </th>
+              <th (click)="toggleSort('createdAt')" class="sortable">
+                Created At
+                @if (sortColumn() === 'createdAt') {
+                  <span class="sort-indicator">{{ sortDirection() === 'asc' ? '↑' : '↓' }}</span>
+                }
+              </th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of paginatedUsers(); track user.id) {
+              <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td>
+                  <span class="role-badge" [class.role-admin]="user.role === 'ADMIN'" [class.role-user]="user.role === 'USER'">
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td>{{ user.createdAt | date:'short' }}</td>
+                <td class="actions-cell">
+                  <button
+                    class="btn-danger btn-sm"
+                    (click)="deleteUser(user)"
+                    [disabled]="user.email === currentUserEmail()"
+                    [title]="user.email === currentUserEmail() ? 'Cannot delete yourself' : 'Delete user'"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="empty-state">
+                  No users found
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button
+            class="btn-secondary btn-sm"
+            (click)="prevPage()"
+            [disabled]="currentPage() === 0"
+          >
+            Previous
+          </button>
+          <span class="page-info">
+            Page {{ currentPage() + 1 }} of {{ totalPages() }}
+          </span>
+          <button
+            class="btn-secondary btn-sm"
+            (click)="nextPage()"
+            [disabled]="currentPage() >= totalPages() - 1"
+          >
+            Next
+          </button>
+        </div>
+      }
+    }
+  </main>
+</div>
+
+<!-- User Form Dialog -->
+<app-user-form-dialog #userFormDialog (saved)="onUserSaved()"></app-user-form-dialog>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog #confirmDialog (confirmed)="confirmDelete()"></app-confirm-dialog>
+
+<!-- Toast Notifications -->
+<app-toast></app-toast>
