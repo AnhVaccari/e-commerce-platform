@@ -7,7 +7,7 @@
 .hero {
   text-align: center;
   padding: 3rem 1rem;
-  background: #111827;
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
   border-radius: 12px;
   color: white;
   margin-bottom: 2rem;
@@ -42,14 +42,14 @@
 }
 
 .filter-btn:hover {
-  border-color: #111827;
-  color: #111827;
+  border-color: #4b5563;
+  color: #4b5563;
 }
 
 .filter-btn.active {
-  background: #111827;
+  background: #4b5563;
   color: white;
-  border-color: #111827;
+  border-color: #4b5563;
 }
 
 /* Loading */
@@ -62,7 +62,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #e5e7eb;
-  border-top-color: #111827;
+  border-top-color: #4b5563;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -119,7 +119,7 @@
   display: inline-block;
   padding: 0.25rem 0.75rem;
   background: #f3f4f6;
-  color: #374151;
+  color: #6b7280;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: 500;
@@ -129,7 +129,7 @@
 .product-info h3 {
   margin: 0 0 0.5rem;
   font-size: 1.1rem;
-  color: #111827;
+  color: #4b5563;
 }
 
 .description {
@@ -153,7 +153,7 @@
 .price {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #111827;
+  color: #4b5563;
 }
 
 .stock-status {
@@ -173,7 +173,7 @@
   width: 100%;
   padding: 0.75rem;
   border: none;
-  background: #111827;
+  background: #4b5563;
   color: white;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -187,7 +187,7 @@
 }
 
 .add-to-cart-btn:hover:not(:disabled) {
-  background: #374151;
+  background: #6b7280;
 }
 
 .add-to-cart-btn:disabled {
