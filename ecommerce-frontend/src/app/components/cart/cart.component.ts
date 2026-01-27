@@ -1,6 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { CartItem } from '../../interfaces/cart.interface';
-import { Subscription } from 'rxjs';
+import { Component, inject, computed } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 
@@ -10,32 +8,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
-export class CartComponent implements OnInit, OnDestroy {
-  cartItems: CartItem[] = [];
-  totalPrice: number = 0;
-  totalItems: number = 0;
-  private cartSubscription?: Subscription;
+export class CartComponent {
+  private cartService = inject(CartService);
 
-  constructor(private cartService: CartService, private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {
-    // S'abonner aux changements du panier
-    this.cartSubscription = this.cartService.getCartItems().subscribe({
-      next: (items) => {
-        this.cartItems = items;
-        this.totalPrice = this.cartService.getTotalPrice();
-        this.totalItems = this.cartService.getTotalItems();
-        this.cdr.detectChanges();
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    // Nettoyer l'abonnement
-    if (this.cartSubscription) {
-      this.cartSubscription.unsubscribe();
-    }
-  }
+  // Use signals from CartService
+  cartItems = this.cartService.cartItems;
+  totalPrice = this.cartService.totalPrice;
+  totalItems = this.cartService.totalItems;
 
   // Supprimer un produit du panier
   removeFromCart(productId: number): void {
@@ -48,16 +27,12 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   // Ajouter une unité
-  increaseQuantity(item: CartItem): void {
-    this.cartService.addToCart(item.product, 1);
+  increaseQuantity(item: { product: { id: number }; quantity: number }): void {
+    this.cartService.updateQuantity(item.product.id, item.quantity + 1);
   }
 
-  // Diminuer une unité (mais pas en dessous de 1)
-  decreaseQuantity(item: CartItem): void {
-    if (item.quantity > 1) {
-      item.quantity--;
-      // On notifie le service du changement
-      this.cartService['cartSubject'].next(this.cartItems);
-    }
+  // Diminuer une unité
+  decreaseQuantity(item: { product: { id: number }; quantity: number }): void {
+    this.cartService.updateQuantity(item.product.id, item.quantity - 1);
   }
 }

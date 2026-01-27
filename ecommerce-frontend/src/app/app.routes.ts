@@ -3,7 +3,14 @@ import { authGuard, roleGuard } from './core/guards';
 import { AccessDeniedComponent } from './shared/components/access-denied/access-denied.component';
 
 export const routes: Routes = [
-  // Public routes (no guards)
+  // Public landing page with products
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/home/home.component').then((m) => m.HomeComponent),
+  },
+
+  // Auth routes (public)
   {
     path: 'login',
     loadComponent: () =>
@@ -22,13 +29,12 @@ export const routes: Routes = [
   // Access denied page
   { path: 'access-denied', component: AccessDeniedComponent },
 
-  // Protected user routes (auth only)
+  // Cart page (public - but checkout requires auth)
   {
-    path: 'products',
-    canActivate: [authGuard],
+    path: 'cart',
     loadComponent: () =>
-      import('./features/products/products-page.component').then(
-        (m) => m.ProductsPageComponent
+      import('./features/cart/cart-page.component').then(
+        (m) => m.CartPageComponent
       ),
   },
 
@@ -70,9 +76,6 @@ export const routes: Routes = [
     ],
   },
 
-  // Default redirect
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  // Wildcard - redirect unknown routes
-  { path: '**', redirectTo: '/login' },
+  // Wildcard - redirect unknown routes to home
+  { path: '**', redirectTo: '' },
 ];

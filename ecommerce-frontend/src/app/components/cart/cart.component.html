@@ -1,8 +1,8 @@
 <div class="cart-container">
-  <h2>🛒 Mon Panier</h2>
+  <h2>Mon Panier</h2>
 
   <!-- Panier vide -->
-  @if (cartItems.length === 0) {
+  @if (cartItems().length === 0) {
   <div class="empty-cart">
     <p>Votre panier est vide</p>
     <p>Ajoutez des produits pour commencer vos achats !</p>
@@ -10,26 +10,32 @@
   }
 
   <!-- Panier avec produits -->
-  @if (cartItems.length > 0) {
+  @if (cartItems().length > 0) {
   <div class="cart-content">
     <!-- Liste des produits -->
     <div class="cart-items">
-      @for (item of cartItems; track item.product.id) {
+      @for (item of cartItems(); track item.product.id) {
       <div class="cart-item">
         <div class="item-info">
           <h4>{{ item.product.name }}</h4>
-          <p class="item-price">{{ item.product.price }}€</p>
+          <p class="item-price">{{ item.product.price | number:'1.2-2' }} €</p>
         </div>
 
         <div class="quantity-controls">
-          <button class="quantity-btn" (click)="decreaseQuantity(item)">-</button>
+          <button class="quantity-btn" (click)="decreaseQuantity(item)">−</button>
           <span class="quantity">{{ item.quantity }}</span>
           <button class="quantity-btn" (click)="increaseQuantity(item)">+</button>
         </div>
 
-        <div class="item-total">{{ item.product.price * item.quantity | number : '1.2-2' }}€</div>
+        <div class="item-total">{{ item.product.price * item.quantity | number:'1.2-2' }} €</div>
 
-        <button class="remove-btn" (click)="removeFromCart(item.product.id)">&#128465;</button>
+        <button class="remove-btn" (click)="removeFromCart(item.product.id)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+          </svg>
+        </button>
       </div>
       }
     </div>
@@ -37,8 +43,8 @@
     <!-- Résumé du panier -->
     <div class="cart-summary">
       <div class="summary-row">
-        <span>Articles ({{ totalItems }})</span>
-        <span>{{ totalPrice | number : '1.2-2' }}€</span>
+        <span>Articles ({{ totalItems() }})</span>
+        <span>{{ totalPrice() | number:'1.2-2' }} €</span>
       </div>
 
       <div class="cart-actions">
