@@ -41,6 +41,23 @@ public class ProductService {
         return productRepository.findByNameContainingIgnoreCase(name);
     }
 
+    // Mettre à jour un produit
+    public Product updateProduct(Long id, Product productDetails) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setName(productDetails.getName());
+            product.setDescription(productDetails.getDescription());
+            product.setPrice(productDetails.getPrice());
+            product.setStock(productDetails.getStock());
+            product.setCategory(productDetails.getCategory());
+            return productRepository.save(product);
+        } else {
+            throw new IllegalArgumentException("Produit avec l'ID " + id + " introuvable");
+        }
+    }
+
     // Supprimer un produit
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);

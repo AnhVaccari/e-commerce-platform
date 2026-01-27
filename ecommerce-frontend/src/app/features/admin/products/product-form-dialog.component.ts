@@ -164,14 +164,16 @@ export class ProductFormDialogComponent {
 
   open(product?: Product): void {
     if (product) {
-      // Edit mode - but backend doesn't support PUT
-      // Show toast message instead
-      this.toastService.show(
-        'La modification nécessite un support backend. Veuillez supprimer et recréer le produit pour le moment.',
-        'info',
-        5000
-      );
-      return;
+      // Edit mode
+      this.isEdit = true;
+      this.editingProductId = product.id;
+      this.productForm.patchValue({
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        categoryId: product.category.id
+      });
     } else {
       // Create mode
       this.isEdit = false;
@@ -220,8 +222,12 @@ export class ProductFormDialogComponent {
       }
     };
 
-    // POST to create product
-    this.http.post<Product>('http://localhost:8080/api/products', payload).subscribe({
+    // Use PUT for edit, POST for create
+    const request$ = this.isEdit
+      ? this.http.put<Product>(`http://localhost:8080/api/products/${this.editingProductId}`, payload)
+      : this.http.post<Product>('http://localhost:8080/api/products', payload);
+
+    request$.subscribe({
       next: () => {
         this.isSubmitting = false;
         this.close();

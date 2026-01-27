@@ -70,6 +70,17 @@ public class ProductController {
         return ResponseEntity.ok(newProduct);
     }
 
+    // PUT /api/products/{id} - Mettre à jour un produit
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
+        try {
+            Product updatedProduct = productService.updateProduct(id, product);
+            return ResponseEntity.ok(updatedProduct);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     // DELETE /api/products/{id} - Supprimer un produit
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
