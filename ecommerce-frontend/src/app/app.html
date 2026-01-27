@@ -2,19 +2,78 @@
   <header>
     <div class="header-content">
       <a routerLink="/" class="logo">
-        <h1>E-Commerce Platform</h1>
+        <h1>E-Commerce</h1>
       </a>
-      <nav class="main-nav">
+
+      <!-- Search Bar (center) -->
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Rechercher un produit..."
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="search-btn" (click)="onSearch()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Right Icons -->
+      <nav class="nav-icons">
         @if (isAuthenticated()) {
-          <span class="user-info">{{ currentUser()?.firstName || currentUser()?.email }}</span>
-          <a routerLink="/products" class="nav-link">Catalogue</a>
-          @if (currentUser()?.role === 'ADMIN') {
-            <a routerLink="/admin" class="nav-link">Admin</a>
-          }
-          <button class="btn-logout" (click)="logout()">Déconnexion</button>
+          <!-- Authenticated user -->
+          <a routerLink="/cart" class="nav-icon" title="Mon panier">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+            </svg>
+            @if (cartItemCount() > 0) {
+              <span class="cart-badge">{{ cartItemCount() }}</span>
+            }
+          </a>
+
+          <!-- User dropdown -->
+          <div class="user-menu">
+            <button class="nav-icon user-btn" (click)="toggleUserMenu()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
+            @if (showUserMenu) {
+              <div class="dropdown-menu">
+                <span class="dropdown-user">{{ currentUser()?.firstName || currentUser()?.email }}</span>
+                <a routerLink="/" class="dropdown-item" (click)="showUserMenu = false">Catalogue</a>
+                @if (currentUser()?.role === 'ADMIN') {
+                  <a routerLink="/admin" class="dropdown-item" (click)="showUserMenu = false">Dashboard Admin</a>
+                }
+                <button class="dropdown-item logout" (click)="logout()">Déconnexion</button>
+              </div>
+            }
+          </div>
         } @else {
-          <a routerLink="/login" class="nav-link">Connexion</a>
-          <a routerLink="/register" class="nav-link btn-register">S'inscrire</a>
+          <!-- Not authenticated -->
+          <a routerLink="/cart" class="nav-icon" title="Mon panier">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+            </svg>
+            @if (cartItemCount() > 0) {
+              <span class="cart-badge">{{ cartItemCount() }}</span>
+            }
+          </a>
+
+          <a routerLink="/login" class="nav-icon" title="Connexion">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
         }
       </nav>
     </div>
