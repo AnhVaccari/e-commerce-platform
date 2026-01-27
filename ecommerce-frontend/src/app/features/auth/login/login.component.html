@@ -77,20 +77,20 @@
         <label for="rememberMe">Se souvenir de moi</label>
       </div>
 
-      <!-- Submit Button -->
-      <button type="submit" class="btn-primary" [disabled]="isLoading">
-        @if (isLoading) {
-          <span class="spinner"></span>
-          Connexion en cours...
-        } @else {
-          Se connecter
-        }
-      </button>
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="isLoading">
+          @if (isLoading) {
+            <span class="spinner"></span>
+            Connexion...
+          } @else {
+            Connexion
+          }
+        </button>
+        <a routerLink="/register" class="btn-secondary">
+          S'inscrire
+        </a>
+      </div>
     </form>
-
-    <!-- Footer -->
-    <div class="form-footer">
-      <p>Pas encore de compte ? <a routerLink="/register">Créer un compte</a></p>
-    </div>
   </div>
 </div>

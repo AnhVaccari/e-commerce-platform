@@ -30,7 +30,7 @@ export class LoginComponent {
   });
 
   constructor() {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/products';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   onSubmit(): void {
@@ -49,9 +49,14 @@ export class LoginComponent {
     this.authService.login(email, password).subscribe({
       next: () => {
         this.successMessage = 'Bienvenue !';
+
+        // Redirect based on user role
+        const user = this.authService.currentUser();
+        const redirectUrl = user?.role === 'ADMIN' ? '/admin/dashboard' : this.returnUrl;
+
         setTimeout(() => {
-          this.router.navigate([this.returnUrl]);
-        }, 1500);
+          this.router.navigate([redirectUrl]);
+        }, 1000);
       },
       error: (error) => {
         this.isLoading = false;

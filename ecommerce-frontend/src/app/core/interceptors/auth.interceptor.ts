@@ -1,12 +1,10 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const router = inject(Router);
 
   // Add token only to /api/* requests
   let modifiedReq = req;
@@ -21,14 +19,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     }
   }
 
-  // Handle auth errors
+  // Handle auth errors (only for authenticated routes)
   return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
+      // Only handle 401 for logout, let components handle other errors
+      if (error.status === 401 && authService.getToken()) {
+        // Token is invalid/expired, logout
         authService.logout();
-      } else if (error.status === 403) {
-        router.navigate(['/access-denied']);
       }
+      // Don't redirect on 403 - let components handle it
       return throwError(() => error);
     })
   );

@@ -71,9 +71,6 @@ export class AuthService {
       if (decoded.exp && decoded.exp * 1000 < Date.now()) {
         console.log('Token expired, clearing auth state');
         this.clearAuthState();
-        this.router.navigate(['/login'], {
-          queryParams: { message: 'Session expired, please login again' },
-        });
         return;
       }
 
@@ -133,7 +130,7 @@ export class AuthService {
   // Logout
   logout(): void {
     this.clearAuthState();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   // Clear all auth state
