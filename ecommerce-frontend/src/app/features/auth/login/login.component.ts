@@ -50,9 +50,14 @@ export class LoginComponent {
       next: () => {
         this.successMessage = 'Bienvenue !';
 
-        // Redirect based on user role
+        // Redirect: prioritize returnUrl if explicitly set, otherwise admin goes to dashboard
         const user = this.authService.currentUser();
-        const redirectUrl = user?.role === 'ADMIN' ? '/admin/dashboard' : this.returnUrl;
+        const hasExplicitReturnUrl = this.returnUrl !== '/';
+        const redirectUrl = hasExplicitReturnUrl
+          ? this.returnUrl
+          : user?.role === 'ADMIN'
+            ? '/admin/dashboard'
+            : '/';
 
         setTimeout(() => {
           this.router.navigate([redirectUrl]);

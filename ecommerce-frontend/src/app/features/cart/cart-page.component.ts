@@ -98,7 +98,7 @@ import { AuthService } from '../../core/services/auth.service';
                 Passer la commande
               </button>
             } @else {
-              <a routerLink="/login" class="checkout-btn">
+              <a routerLink="/login" [queryParams]="{returnUrl: '/cart'}" class="checkout-btn">
                 Se connecter pour commander
               </a>
             }
