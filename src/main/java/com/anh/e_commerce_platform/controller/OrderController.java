@@ -2,8 +2,12 @@ package com.anh.e_commerce_platform.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import com.anh.e_commerce_platform.dto.CreateOrderRequest;
+import com.anh.e_commerce_platform.dto.OrderResponse;
 import com.anh.e_commerce_platform.dto.OrderStatusUpdateRequest;
 import com.anh.e_commerce_platform.entity.Order;
 import com.anh.e_commerce_platform.entity.User;
@@ -59,9 +63,22 @@ public class OrderController {
 
     // POST /api/orders - Créer une nouvelle commande
     @PostMapping
-    public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) {
-        Order newOrder = orderService.createOrder(order);
-        return ResponseEntity.ok(newOrder);
+    public ResponseEntity<?> createOrder(@Valid @RequestBody CreateOrderRequest request) {
+        try {
+            // Récupérer l'utilisateur connecté
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String email = authentication.getName();
+
+            Optional<User> userOpt = userService.getUserByEmail(email);
+            if (userOpt.isEmpty()) {
+                return ResponseEntity.badRequest().body("Utilisateur non trouvé");
+            }
+
+            OrderResponse response = orderService.createOrderFromRequest(request, userOpt.get());
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // PUT /api/orders/{id}/status - Changer le statut d'une commande

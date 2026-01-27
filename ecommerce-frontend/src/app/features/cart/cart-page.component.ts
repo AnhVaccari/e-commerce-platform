@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
+import { OrderService } from '../../services/order.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -12,7 +13,17 @@ import { AuthService } from '../../core/services/auth.service';
     <div class="cart-page">
       <h1>Mon Panier</h1>
 
-      @if (cartService.cartItems().length === 0) {
+      @if (orderSuccess()) {
+        <div class="order-success">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <h2>Commande confirmée !</h2>
+          <p>Merci pour votre achat. Votre commande #{{ lastOrderId() }} a été enregistrée.</p>
+          <a routerLink="/" class="btn-primary">Continuer mes achats</a>
+        </div>
+      } @else if (cartService.cartItems().length === 0) {
         <div class="empty-cart">
           <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="8" cy="21" r="1"></circle>
@@ -93,9 +104,22 @@ import { AuthService } from '../../core/services/auth.service';
               <span>{{ cartService.totalPrice() | number:'1.2-2' }} €</span>
             </div>
 
+            @if (errorMessage()) {
+              <div class="error-message">{{ errorMessage() }}</div>
+            }
+
             @if (authService.isAuthenticated()) {
-              <button class="checkout-btn">
-                Passer la commande
+              <button
+                class="checkout-btn"
+                (click)="placeOrder()"
+                [disabled]="isLoading()"
+              >
+                @if (isLoading()) {
+                  <span class="spinner"></span>
+                  Traitement...
+                } @else {
+                  Passer la commande
+                }
               </button>
             } @else {
               <a routerLink="/login" [queryParams]="{returnUrl: '/cart'}" class="checkout-btn">
@@ -103,7 +127,7 @@ import { AuthService } from '../../core/services/auth.service';
               </a>
             }
 
-            <button class="clear-btn" (click)="clearCart()">
+            <button class="clear-btn" (click)="clearCart()" [disabled]="isLoading()">
               Vider le panier
             </button>
           </div>
@@ -116,6 +140,13 @@ import { AuthService } from '../../core/services/auth.service';
 export class CartPageComponent {
   cartService = inject(CartService);
   authService = inject(AuthService);
+  orderService = inject(OrderService);
+  router = inject(Router);
+
+  isLoading = signal(false);
+  errorMessage = signal('');
+  orderSuccess = signal(false);
+  lastOrderId = signal<number | null>(null);
 
   increaseQuantity(productId: number, currentQty: number): void {
     this.cartService.updateQuantity(productId, currentQty + 1);
@@ -131,5 +162,32 @@ export class CartPageComponent {
 
   clearCart(): void {
     this.cartService.clearCart();
+  }
+
+  placeOrder(): void {
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+
+    const items = this.cartService.cartItems().map((item) => ({
+      productId: item.product.id,
+      quantity: item.quantity,
+    }));
+
+    this.orderService.createOrder({ items }).subscribe({
+      next: (response) => {
+        this.isLoading.set(false);
+        this.lastOrderId.set(response.id);
+        this.orderSuccess.set(true);
+        this.cartService.clearCart();
+      },
+      error: (error) => {
+        this.isLoading.set(false);
+        if (typeof error.error === 'string') {
+          this.errorMessage.set(error.error);
+        } else {
+          this.errorMessage.set('Erreur lors de la commande. Veuillez réessayer.');
+        }
+      },
+    });
   }
 }
