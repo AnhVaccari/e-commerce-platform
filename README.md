@@ -1,58 +1,67 @@
-# 🛒 E-Commerce Platform
+# E-Commerce Platform
 
-Application e-commerce complète développée avec **Spring Boot** et **Angular**.
+Application e-commerce full-stack developpee avec **Spring Boot** et **Angular**.
 
 ![E-commerce Platform](images/e_commerce1.png)
 
 ![E-commerce Platform](images/e_commerce2.png)
-## 🎯 Description
 
-Plateforme e-commerce moderne avec gestion de catalogue, panier d'achat et interface administrative. 
-Développée pour démontrer la maîtrise du développement full-stack Java/Angular.
+## Description
 
-## 🚀 Technologies utilisées
+Plateforme e-commerce avec authentification JWT, gestion de catalogue, panier d'achat, passage de commandes et interface d'administration.
+
+## Technologies utilisees
 
 ### Backend
 - **Java 21** - Langage de programmation
 - **Spring Boot 3.4** - Framework web
+- **Spring Security** - Authentification JWT
 - **Spring Data JPA** - ORM et persistance
-- **H2 Database** - Base de données en mémoire
-- **Maven** - Gestionnaire de dépendances
+- **H2 Database** - Base de donnees en memoire
+- **Maven** - Gestionnaire de dependances
 
-### Frontend  
+### Frontend
 - **Angular 21** - Framework frontend
-- **TypeScript** - Langage typé pour JavaScript
+- **TypeScript** - Langage type pour JavaScript
 - **CSS3** - Styles et responsive design
-- **RxJS** - Programmation réactive
+- **Angular Signals** - Gestion d'etat reactive
 
-## ✨ Fonctionnalités
+## Fonctionnalites
 
-### Catalogue produits
-- ✅ Affichage en grille responsive
-- ✅ Informations détaillées (nom, prix, stock, catégorie)
-- ✅ Gestion des statuts de stock
+### Authentification
+- Inscription et connexion avec JWT
+- Gestion des roles (USER / ADMIN)
+- Protection des routes par role
+- Intercepteur HTTP pour l'ajout automatique du token
 
-### Recherche et filtrage
-- ✅ Recherche par nom de produit
-- ✅ Filtrage par catégories
-- ✅ Interface intuitive avec reset des filtres
+### Catalogue produits (page d'accueil publique)
+- Affichage en grille responsive
+- Filtrage par categories
+- Recherche de produits
+- Ajout au panier sans authentification
 
 ### Panier d'achat
-- ✅ Ajout/suppression de produits
-- ✅ Gestion des quantités avec contrôles +/-
-- ✅ Calcul automatique du total
-- ✅ Interface temps réel
+- Ajout/suppression de produits
+- Gestion des quantites (+/-)
+- Calcul automatique du total
+- Persistance dans le localStorage
+- Badge avec nombre d'articles dans la navbar
 
-### Architecture technique
-- ✅ API REST complète avec validation
-- ✅ Relations JPA entre entités
-- ✅ Services métier avec logique business
-- ✅ Interfaces TypeScript pour type safety
-- ✅ Gestion d'état réactive avec BehaviorSubject
+### Commandes
+- Passage de commande depuis le panier
+- Validation du stock cote serveur
+- Reduction automatique du stock apres commande
+- Page de confirmation avec numero de commande
 
-## 🛠️ Installation et lancement
+### Dashboard Admin
+- Vue d'ensemble avec statistiques
+- Gestion des produits (CRUD complet)
+- Gestion des utilisateurs
+- Gestion des commandes et statuts
 
-### Prérequis
+## Installation et lancement
+
+### Prerequis
 - Java 21+
 - Node.js 20+
 - Angular CLI 21
@@ -77,23 +86,69 @@ ng serve
 ```
 L'interface sera accessible sur `http://localhost:4200`
 
-## 📡 API Endpoints
+### Comptes de test
+| Role | Email | Mot de passe |
+|------|-------|-------------|
+| Admin | admin@ecommerce.com | admin123 |
+| User | john@test.com | user123 |
 
-| Méthode | URL | Description |
+## API Endpoints
+
+### Authentification
+| Methode | URL | Description |
+|---------|-----|-------------|
+| POST | `/api/auth/register` | Inscription |
+| POST | `/api/auth/login` | Connexion |
+
+### Produits
+| Methode | URL | Description |
 |---------|-----|-------------|
 | GET | `/api/products` | Liste tous les produits |
+| GET | `/api/products/{id}` | Produit par ID |
 | GET | `/api/products/search?name=...` | Recherche par nom |
-| GET | `/api/products/category/{id}` | Produits par catégorie |
-| GET | `/api/categories` | Liste des catégories |
-| POST | `/api/products` | Créer un produit |
+| GET | `/api/products/category/{id}` | Produits par categorie |
+| POST | `/api/products` | Creer un produit |
+| PUT | `/api/products/{id}` | Modifier un produit |
+| DELETE | `/api/products/{id}` | Supprimer un produit |
 
-## 🎓 Objectifs d'apprentissage
+### Categories
+| Methode | URL | Description |
+|---------|-----|-------------|
+| GET | `/api/categories` | Liste des categories |
 
-Ce projet démontre la maîtrise de :
-- **Développement full-stack** avec Spring Boot et Angular
-- **Architecture en couches** (Entity, Repository, Service, Controller)
-- **API REST** avec validation et gestion d'erreurs
-- **Interface utilisateur moderne** et responsive
-- **Gestion d'état** réactive côté frontend
-- **Intégration** backend-frontend via HTTP
+### Commandes
+| Methode | URL | Description |
+|---------|-----|-------------|
+| GET | `/api/orders` | Toutes les commandes |
+| GET | `/api/orders/{id}` | Commande par ID |
+| GET | `/api/orders/user/{userId}` | Commandes d'un utilisateur |
+| POST | `/api/orders` | Passer une commande |
+| PUT | `/api/orders/{id}/status` | Modifier le statut |
 
+### Utilisateurs
+| Methode | URL | Description |
+|---------|-----|-------------|
+| GET | `/api/users` | Liste des utilisateurs |
+| GET | `/api/users/{id}` | Utilisateur par ID |
+
+## Architecture
+
+```
+e-commerce-platform/
+├── src/main/java/                  # Backend Spring Boot
+│   ├── config/                     # Security, JWT, CORS, DataInitializer
+│   ├── controller/                 # REST Controllers
+│   ├── dto/                        # Data Transfer Objects
+│   ├── entity/                     # JPA Entities
+│   ├── repository/                 # Spring Data Repositories
+│   └── service/                    # Business Logic
+├── ecommerce-frontend/src/app/     # Frontend Angular
+│   ├── core/                       # Guards, interceptors, auth service
+│   ├── features/
+│   │   ├── admin/                  # Dashboard, products, users, orders
+│   │   ├── auth/                   # Login, register
+│   │   ├── cart/                   # Cart page
+│   │   └── home/                   # Landing page (catalogue)
+│   ├── services/                   # Cart, order services
+│   └── interfaces/                 # TypeScript interfaces
+```
