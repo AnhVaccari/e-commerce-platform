@@ -31,3 +31,20 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Claude settings
+.claude/settings.local.json
+.mcp.json
+
+# Clinic reports
+.clinic/
+*.0x/
+*.log
+
+# GCP credentials
+gcp-credentials.json
+
+# GSD planning files (keep milestones for history)
+.planning/*
+!.planning/milestones/
+!.planning/codebase/

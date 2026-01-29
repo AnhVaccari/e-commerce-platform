@@ -108,7 +108,7 @@ export class OrderManagementComponent implements OnInit {
   loadOrders(): void {
     this.isLoading.set(true);
 
-    this.http.get<Order[]>('${environment.apiUrl}/orders').subscribe({
+    this.http.get<Order[]>(`${environment.apiUrl}/orders`).subscribe({
       next: (orders) => {
         this.orders.set(orders);
         this.isLoading.set(false);

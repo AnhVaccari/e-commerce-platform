@@ -117,7 +117,7 @@ export class UserManagementComponent implements OnInit {
 
   loadUsers(): void {
     this.isLoading.set(true);
-    this.http.get<User[]>('${environment.apiUrl}/users').subscribe({
+    this.http.get<User[]>(`${environment.apiUrl}/users`).subscribe({
       next: (users) => {
         this.users.set(users);
         this.isLoading.set(false);

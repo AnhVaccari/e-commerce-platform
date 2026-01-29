@@ -139,7 +139,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.http.get<Category[]>('${environment.apiUrl}/categories').subscribe({
+    this.http.get<Category[]>(`${environment.apiUrl}/categories`).subscribe({
       next: (categories) => this.categories.set(categories),
       error: (err) => console.error('Erreur chargement catégories:', err)
     });
@@ -147,7 +147,7 @@ export class HomeComponent implements OnInit {
 
   loadProducts(): void {
     this.isLoading.set(true);
-    this.http.get<Product[]>('${environment.apiUrl}/products').subscribe({
+    this.http.get<Product[]>(`${environment.apiUrl}/products`).subscribe({
       next: (products) => {
         this.products.set(products);
         this.filteredProducts.set(products);

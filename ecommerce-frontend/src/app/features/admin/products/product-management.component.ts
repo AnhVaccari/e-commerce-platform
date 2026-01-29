@@ -129,7 +129,7 @@ export class ProductManagementComponent implements OnInit {
   loadProducts(): void {
     this.isLoading.set(true);
 
-    this.http.get<Product[]>('${environment.apiUrl}/products').subscribe({
+    this.http.get<Product[]>(`${environment.apiUrl}/products`).subscribe({
       next: (products) => {
         this.products.set(products);
         this.isLoading.set(false);
@@ -148,7 +148,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.http.get<Category[]>('${environment.apiUrl}/categories').subscribe({
+    this.http.get<Category[]>(`${environment.apiUrl}/categories`).subscribe({
       next: (categories) => {
         this.categories.set(categories);
       },

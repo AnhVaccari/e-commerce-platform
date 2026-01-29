@@ -226,7 +226,7 @@ export class ProductFormDialogComponent {
     // Use PUT for edit, POST for create
     const request$ = this.isEdit
       ? this.http.put<Product>(`${environment.apiUrl}/products/${this.editingProductId}`, payload)
-      : this.http.post<Product>('${environment.apiUrl}/products', payload);
+      : this.http.post<Product>(`${environment.apiUrl}/products`, payload);
 
     request$.subscribe({
       next: () => {

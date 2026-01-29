@@ -209,7 +209,7 @@ export class UserFormDialogComponent {
       address: this.userForm.value.address || null
     };
 
-    this.http.post('${environment.apiUrl}/users', payload).subscribe({
+    this.http.post(`${environment.apiUrl}/users`, payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.close();
