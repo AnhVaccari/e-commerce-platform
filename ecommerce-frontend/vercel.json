@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/ecommerce-frontend/browser",
+  "outputDirectory": "dist/ecommerce-frontend",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
