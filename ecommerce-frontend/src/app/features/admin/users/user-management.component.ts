@@ -9,6 +9,7 @@ import { ToastService } from '../shared/toast/toast.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { UserFormDialogComponent } from './user-form-dialog.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-management',
@@ -116,7 +117,7 @@ export class UserManagementComponent implements OnInit {
 
   loadUsers(): void {
     this.isLoading.set(true);
-    this.http.get<User[]>('http://localhost:8080/api/users').subscribe({
+    this.http.get<User[]>('${environment.apiUrl}/users').subscribe({
       next: (users) => {
         this.users.set(users);
         this.isLoading.set(false);
@@ -175,7 +176,7 @@ export class UserManagementComponent implements OnInit {
     const userId = this.deletingUserId();
     if (userId === null) return;
 
-    this.http.delete(`http://localhost:8080/api/users/${userId}`).subscribe({
+    this.http.delete(`${environment.apiUrl}/users/${userId}`).subscribe({
       next: () => {
         this.toastService.show('Utilisateur supprimé avec succès', 'success');
         this.loadUsers();

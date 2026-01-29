@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Product, Category } from '../../interfaces/product.interface';
 import { CartService } from '../../services/cart.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -138,7 +139,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.http.get<Category[]>('http://localhost:8080/api/categories').subscribe({
+    this.http.get<Category[]>('${environment.apiUrl}/categories').subscribe({
       next: (categories) => this.categories.set(categories),
       error: (err) => console.error('Erreur chargement catégories:', err)
     });
@@ -146,7 +147,7 @@ export class HomeComponent implements OnInit {
 
   loadProducts(): void {
     this.isLoading.set(true);
-    this.http.get<Product[]>('http://localhost:8080/api/products').subscribe({
+    this.http.get<Product[]>('${environment.apiUrl}/products').subscribe({
       next: (products) => {
         this.products.set(products);
         this.filteredProducts.set(products);
@@ -165,7 +166,7 @@ export class HomeComponent implements OnInit {
     if (categoryId === null) {
       this.filteredProducts.set(this.products());
     } else {
-      this.http.get<Product[]>(`http://localhost:8080/api/products/category/${categoryId}`).subscribe({
+      this.http.get<Product[]>(`${environment.apiUrl}/products/category/${categoryId}`).subscribe({
         next: (products) => this.filteredProducts.set(products),
         error: (err) => console.error('Erreur filtrage:', err)
       });
@@ -179,7 +180,7 @@ export class HomeComponent implements OnInit {
     }
 
     this.isLoading.set(true);
-    this.http.get<Product[]>(`http://localhost:8080/api/products/search?name=${encodeURIComponent(query)}`).subscribe({
+    this.http.get<Product[]>(`${environment.apiUrl}/products/search?name=${encodeURIComponent(query)}`).subscribe({
       next: (products) => {
         this.filteredProducts.set(products);
         this.isLoading.set(false);

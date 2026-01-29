@@ -8,6 +8,7 @@ import { ToastComponent } from '../shared/toast/toast.component';
 import { ToastService } from '../shared/toast/toast.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { ProductFormDialogComponent } from './product-form-dialog.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-product-management',
@@ -128,7 +129,7 @@ export class ProductManagementComponent implements OnInit {
   loadProducts(): void {
     this.isLoading.set(true);
 
-    this.http.get<Product[]>('http://localhost:8080/api/products').subscribe({
+    this.http.get<Product[]>('${environment.apiUrl}/products').subscribe({
       next: (products) => {
         this.products.set(products);
         this.isLoading.set(false);
@@ -147,7 +148,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.http.get<Category[]>('http://localhost:8080/api/categories').subscribe({
+    this.http.get<Category[]>('${environment.apiUrl}/categories').subscribe({
       next: (categories) => {
         this.categories.set(categories);
       },
@@ -205,7 +206,7 @@ export class ProductManagementComponent implements OnInit {
 
     const id = this.productToDelete.id;
 
-    this.http.delete(`http://localhost:8080/api/products/${id}`).subscribe({
+    this.http.delete(`${environment.apiUrl}/products/${id}`).subscribe({
       next: () => {
         this.toastService.show('Produit supprimé avec succès', 'success');
         this.productToDelete = null;

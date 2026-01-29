@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ToastService } from '../shared/toast/toast.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-form-dialog',
@@ -208,7 +209,7 @@ export class UserFormDialogComponent {
       address: this.userForm.value.address || null
     };
 
-    this.http.post('http://localhost:8080/api/users', payload).subscribe({
+    this.http.post('${environment.apiUrl}/users', payload).subscribe({
       next: () => {
         this.isSubmitting = false;
         this.close();

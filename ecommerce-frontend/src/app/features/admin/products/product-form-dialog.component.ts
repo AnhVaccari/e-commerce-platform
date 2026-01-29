@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Product, Category } from '../../../core/models/admin.model';
 import { ToastService } from '../shared/toast/toast.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-product-form-dialog',
@@ -224,8 +225,8 @@ export class ProductFormDialogComponent {
 
     // Use PUT for edit, POST for create
     const request$ = this.isEdit
-      ? this.http.put<Product>(`http://localhost:8080/api/products/${this.editingProductId}`, payload)
-      : this.http.post<Product>('http://localhost:8080/api/products', payload);
+      ? this.http.put<Product>(`${environment.apiUrl}/products/${this.editingProductId}`, payload)
+      : this.http.post<Product>('${environment.apiUrl}/products', payload);
 
     request$.subscribe({
       next: () => {

@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { Product, Order, User } from '../../../core/models/admin.model';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { ToastService } from '../shared/toast/toast.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -48,9 +49,9 @@ export class AdminDashboardComponent implements OnInit {
     this.isLoading.set(true);
 
     forkJoin({
-      products: this.http.get<Product[]>('http://localhost:8080/api/products'),
-      orders: this.http.get<Order[]>('http://localhost:8080/api/orders'),
-      users: this.http.get<User[]>('http://localhost:8080/api/users')
+      products: this.http.get<Product[]>('${environment.apiUrl}/products'),
+      orders: this.http.get<Order[]>('${environment.apiUrl}/orders'),
+      users: this.http.get<User[]>('${environment.apiUrl}/users')
     }).subscribe({
       next: ({ products, orders, users }) => {
         this.products.set(products);

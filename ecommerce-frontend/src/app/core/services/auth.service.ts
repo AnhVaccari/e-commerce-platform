@@ -6,12 +6,13 @@ import { tap, catchError } from 'rxjs/operators';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { User } from '../models/user.model';
 import { LoginRequest, LoginResponse, RegisterRequest } from '../models/auth.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8080/api/auth';
+  private readonly API_URL = `${environment.apiUrl}/auth`;
   private readonly TOKEN_KEY = 'jwt_token';
   private readonly USER_KEY = 'current_user';
 

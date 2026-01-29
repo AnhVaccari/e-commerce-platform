@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { Order, OrderStatus } from '../../../core/models/admin.model';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { ToastService } from '../shared/toast/toast.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-order-management',
@@ -107,7 +108,7 @@ export class OrderManagementComponent implements OnInit {
   loadOrders(): void {
     this.isLoading.set(true);
 
-    this.http.get<Order[]>('http://localhost:8080/api/orders').subscribe({
+    this.http.get<Order[]>('${environment.apiUrl}/orders').subscribe({
       next: (orders) => {
         this.orders.set(orders);
         this.isLoading.set(false);
@@ -155,7 +156,7 @@ export class OrderManagementComponent implements OnInit {
     this.updatingOrderId.set(order.id);
 
     this.http.put(
-      `http://localhost:8080/api/orders/${order.id}/status`,
+      `${environment.apiUrl}/orders/${order.id}/status`,
       { status: newStatus }
     ).subscribe({
       next: () => {
