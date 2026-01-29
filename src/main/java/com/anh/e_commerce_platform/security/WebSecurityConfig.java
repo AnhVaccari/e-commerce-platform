@@ -37,7 +37,8 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Auth endpoints libres
-                        .requestMatchers("/api/products/**").permitAll() // Produits libres (temporaire)
+                        .requestMatchers("/api/products/**").permitAll() // Produits libres
+                        .requestMatchers("/api/categories/**").permitAll() // Catégories libres
                         .requestMatchers("/h2-console/**").permitAll()// H2 console libre
                         .requestMatchers("/api/users/**").hasRole("ADMIN") // Seuls les admins peuvent acceder aux
                                                                            // utilisateurs
